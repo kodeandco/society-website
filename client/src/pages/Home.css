@@ -1,0 +1,121 @@
+.home-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  color: #111;
+}
+
+/* === Hero Section === */
+.hero-section {
+  width: 100%;
+  min-height: 80vh;
+  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+              url("/hero-bg.jpg") center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  padding: 2rem;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.hero-btn {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  padding: 0.8rem 1.6rem;
+  border-radius: 10px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+}
+
+.hero-btn:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(29,78,216,0.3);
+}
+
+/* === Sections === */
+.section-wrapper {
+  max-width: 1200px;
+  margin: 4rem auto;
+  padding: 0 1rem;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  position: relative;
+  color: #111;
+}
+
+.section-title::after {
+  content: "";
+  display: block;
+  width: 70px;
+  height: 4px;
+  background: #2563eb;
+  margin: 0.8rem auto 0;
+  border-radius: 2px;
+}
+
+/* === Gallery View More === */
+.view-more {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.view-btn {
+  background: #111;
+  color: #fff;
+  padding: 0.7rem 1.4rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.view-btn:hover {
+  background: #333;
+}
+
+/* === Responsive === */
+@media (max-width: 900px) {
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+  .hero-content p {
+    font-size: 1rem;
+  }
+  .section-title {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-section {
+    min-height: 60vh;
+    padding: 1rem;
+  }
+  .hero-content h1 {
+    font-size: 1.8rem;
+  }
+  .hero-content p {
+    font-size: 0.95rem;
+  }
+}
