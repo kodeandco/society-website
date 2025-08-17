@@ -1,0 +1,70 @@
+/* Hero Section Styles */
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 60vh; /* Smaller hero section */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Background Image */
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../assets/hero-bg.jpg'); /* Add your image path here */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+/* Text Overlay */
+.hero-overlay {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  border-radius: 8px;
+}
+
+.hero-overlay h1 {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .hero-section {
+    height: 50vh;
+  }
+  
+  .hero-overlay h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-overlay {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    height: 40vh;
+  }
+  
+  .hero-overlay h1 {
+    font-size: 1.5rem;
+  }
+  
+  .hero-overlay {
+    padding: 10px;
+  }
+}

@@ -1,35 +1,67 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
+import Nav from './components/Nav';
+import Hero from './components/Hero';
+import Announce from './components/Announce';
+import Infra from './components/Infra';
+import Gallery from './components/Gallery';
+import Map from './components/Map';
+import Footer from './components/Footer';
+import About from './pages/About';
+import Tenders from './pages/Tenders';
+import Login from './pages/Login';  // ✅ Import Login page
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+function Home() {
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <Hero />
+      <div className="main-content">
+        <Announce />
+        <Infra />
+        <Gallery />
+        <Map />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+function Placeholder({ title }) {
+  return (
+    <div
+      style={{
+        maxWidth: '1200px',
+        margin: '2rem auto',
+        padding: '2rem',
+        background: '#fff',
+        borderRadius: '12px',
+        boxShadow: '0 2px 16px #0001',
+        textAlign: 'center'
+      }}
+    >
+      <h1>{title}</h1>
+      <p>Coming soon...</p>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <div className="main-bg">
+        <Nav />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/tenders" element={<Tenders />} />
+          <Route path="/amenities" element={<Placeholder title="Amenities" />} />
+          <Route path="/gallery" element={<Placeholder title="Gallery" />} />
+          <Route path="/contact" element={<Placeholder title="Contact" />} />
+          <Route path="/login" element={<Login />} /> {/* ✅ Login route */}
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
+  );
+}
+
+export default App;
