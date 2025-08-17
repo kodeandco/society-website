@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Login.css";
+import Button from "../components/Button"; // adjust path if needed
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -8,7 +9,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // For now just log the values (later you can connect to backend / Firebase / API)
+    // For now just log the values (later connect to backend / Firebase / API)
     console.log("Email:", email);
     console.log("Password:", password);
 
@@ -44,9 +45,8 @@ const Login = () => {
             />
           </div>
 
-          <button type="submit" className="login-btn">
-            Login
-          </button>
+          {/* Using common Button component */}
+          <Button text="Login" type="submit" variant="primary" />
         </form>
 
         <p className="login-footer">
