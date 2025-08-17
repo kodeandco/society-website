@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Tender = require('../models/tenders_model.js'); // Import the Mongoose model you created
+const Tender = require('../models/tenders_model'); // Import the Mongoose model you created
 
 // --- TENDER API ROUTES ---
 
