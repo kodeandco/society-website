@@ -1,7 +1,7 @@
 // File: download_route.js
 const express = require('express');
 const router = express.Router();
-const Tender = require('./models/tender_model.js'); // Import the Tender model
+const Tender = require('../models/tender_model.js'); // Import the Tender model
 const path = require('path'); // Node.js built-in module for working with file paths
 
 // @route   GET /api/tenders/download/:id
