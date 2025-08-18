@@ -1,7 +1,9 @@
-import React, { useState, useRef } from "react";
-import "./AdminTenderForm.css";
+import React, { useState, useEffect, useRef } from "react";
 import Button from "../components/Button";
+import "./AdminTenderForm.css";
 
+
+// This is the main form component for creating and managing tenders.
 function AdminTenderForm() {
   const [formData, setFormData] = useState({
     title: "",
@@ -9,281 +11,181 @@ function AdminTenderForm() {
     tenderFile: null,
   });
   
-  const fileInputRef = useRef(null);
+  const [tenders, setTenders] = useState([]);
+  const [editingTenderId, setEditingTenderId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [tenderToDelete, setTenderToDelete] = useState(null);
+  const fileInputRef = useRef(null);
 
-  // Function to convert technical errors to user-friendly messages
-  const getUserFriendlyError = (errorMessage) => {
-    const message = errorMessage.toLowerCase();
-    
-    if (message.includes('file too large') || message.includes('limit_file_size')) {
-      return "The file you selected is too big. Please choose a file smaller than 10MB.";
-    }
-    
-    if (message.includes('file upload only supports') || message.includes('invalid file type')) {
-      return "Please upload only PDF, JPEG, JPG, or PNG files.";
-    }
-    
-    if (message.includes('no file uploaded') || message.includes('select a file')) {
-      return "Please select a file to upload.";
-    }
-    
-    if (message.includes('title is required') || message.includes('enter a title')) {
-      return "Please enter a title for the tender.";
-    }
-    
-    if (message.includes('deadline is required') || message.includes('select a deadline')) {
-      return "Please select a deadline date.";
-    }
-    
-    if (message.includes('deadline must be a future date') || message.includes('future date')) {
-      return "The deadline must be a future date. Please select a date that hasn't passed yet.";
-    }
-    
-    if (message.includes('title must be at least 3 characters') || message.includes('too short')) {
-      return "The title is too short. Please enter at least 3 characters.";
-    }
-    
-    if (message.includes('validation error')) {
-      return "Please check your information and make sure all fields are filled correctly.";
-    }
-    
-    if (message.includes('network') || message.includes('fetch') || message.includes('connection')) {
-      return "Cannot connect to the server. Please check your internet connection and try again.";
-    }
-    
-    if (message.includes('500') || message.includes('server error')) {
-      return "Something went wrong on our end. Please try again in a few minutes.";
-    }
-    
-    if (message.includes('404')) {
-      return "The service is not available right now. Please try again later.";
-    }
-    
-    // Default friendly message for unknown errors
-    return "Something went wrong. Please check your information and try again.";
-  };
-
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    
-    // Clear any previous errors when user starts typing/selecting
-    setError("");
-    setSuccess("");
-    
-    // Handle file input
-    if (name === 'tenderFile' && files && files[0]) {
-      const file = files[0];
-      
-      // Check file size (10MB = 10,000,000 bytes)
-      if (file.size > 10000000) {
-        setError("The file you selected is too big. Please choose a file smaller than 10MB.");
-        return;
-      }
-      
-      // Check file type
-      const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
-      if (!allowedTypes.includes(file.type)) {
-        setError("Please upload only PDF, JPEG, JPG, or PNG files.");
-        return;
-      }
-      
-      setFormData({
-        ...formData,
-        [name]: file,
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: files ? files[0] : value,
-      });
-    }
-  };
-
-  const validateForm = () => {
-    // Check if title is provided and long enough
-    if (!formData.title || formData.title.trim().length < 3) {
-      setError("Please enter a title that's at least 3 characters long.");
-      return false;
-    }
-    
-    // Check if deadline is provided
-    if (!formData.deadline) {
-      setError("Please select a deadline date.");
-      return false;
-    }
-    
-    // Check if deadline is in the future
-    const deadlineDate = new Date(formData.deadline);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time to start of day
-    
-    if (deadlineDate <= today) {
-      setError("The deadline must be a future date. Please select a date that hasn't passed yet.");
-      return false;
-    }
-    
-    // Check if file is selected
-    if (!formData.tenderFile) {
-      setError("Please select a file to upload.");
-      return false;
-    }
-    
-    return true;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError("");
-    setSuccess("");
-
-    // Validate form before submitting
-    if (!validateForm()) {
-      setIsLoading(false);
-      return;
-    }
-
+  // --- Fetch Tenders on Load ---
+  const fetchTenders = async () => {
     try {
-      // Use FormData to send both text fields and the file
-      const tenderData = new FormData();
-      tenderData.append("title", formData.title.trim());
-      tenderData.append("deadline", formData.deadline);
-      // The name 'tenderDocument' must match the Multer configuration in tenders_route.js
-      tenderData.append("tenderDocument", formData.tenderFile);
-
-      console.log("Submitting tender...");
-
-      // Make API call to your Express backend
-      const response = await fetch('http://localhost:5000/tenders', {
-        method: 'POST',
-        body: tenderData,
-      });
-
-      // Get the response text to parse error messages
-      const responseText = await response.text();
-      console.log("Server response:", responseText);
-      
+      setIsLoading(true);
+      const response = await fetch('http://localhost:5000/tenders');
       if (!response.ok) {
-        let errorMessage = "Something went wrong. Please try again.";
-        
-        try {
-          const errorData = JSON.parse(responseText);
-          errorMessage = errorData.msg || errorData.message || errorMessage;
-        } catch {
-          // If response is not JSON, use the text directly
-          errorMessage = responseText || errorMessage;
-        }
-        
-        // Convert technical error to user-friendly message
-        setError(getUserFriendlyError(errorMessage));
-        return;
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      const result = JSON.parse(responseText);
-      console.log("Tender created successfully:", result);
-      
-      setSuccess("Great! Your tender has been created successfully.");
-      
-      // Reset form after successful submission
-      setFormData({
-        title: "",
-        deadline: "",
-        tenderFile: null,
-      });
-
-      // Clear the file input
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
-
-    } catch (error) {
-      console.error("Error creating tender:", error);
-      
-      // Handle different types of errors
-      if (error.name === 'TypeError' && error.message.includes('fetch')) {
-        setError("Cannot connect to the server. Please check your internet connection and try again.");
-      } else {
-        setError(getUserFriendlyError(error.message));
-      }
+      const data = await response.json();
+      setTenders(data);
+    } catch (err) {
+      console.error("Failed to fetch tenders:", err);
+      setError("Failed to load tenders. Please check your network connection.");
     } finally {
       setIsLoading(false);
     }
   };
 
+  useEffect(() => {
+    fetchTenders();
+  }, []);
+
+  // --- Form Handling ---
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    setError("");
+    setSuccess("");
+    setFormData({
+      ...formData,
+      [name]: files ? files[0] : value,
+    });
+  };
+
+  // Resets the form and clears any success/error messages.
   const handleReset = () => {
     setFormData({
       title: "",
       deadline: "",
       tenderFile: null,
     });
+    setEditingTenderId(null);
     setError("");
     setSuccess("");
-    
-    // Clear the file input
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   };
 
+  // Handles form submission for both creating and editing tenders.
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+    setSuccess("");
+
+    const tenderData = new FormData();
+    tenderData.append("title", formData.title);
+    tenderData.append("deadline", formData.deadline);
+    if (formData.tenderFile) {
+      tenderData.append("tenderDocument", formData.tenderFile);
+    }
+
+    try {
+      let response;
+      if (editingTenderId) {
+        // Edit existing tender via PATCH request
+        response = await fetch(`http://localhost:5000/tenders/${editingTenderId}`, {
+          method: 'PATCH',
+          body: tenderData,
+        });
+      } else {
+        // Create new tender via POST request
+        response = await fetch('http://localhost:5000/tenders', {
+          method: 'POST',
+          body: tenderData,
+        });
+      }
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.msg || "An unexpected error occurred.");
+      }
+
+      setSuccess(`Tender ${editingTenderId ? 'updated' : 'created'} successfully!`);
+      handleReset();
+      fetchTenders(); // Refresh the list of tenders
+
+    } catch (err) {
+      console.error("Submission error:", err);
+      setError(`Failed to ${editingTenderId ? 'update' : 'create'} tender. Please try again.`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // --- Edit and Delete Handlers ---
+
+  // Sets the form to edit mode with the selected tender's data.
+  const handleEdit = (tender) => {
+    setEditingTenderId(tender._id);
+    setFormData({
+      title: tender.title,
+      deadline: tender.deadline.split('T')[0], // Format date for input field
+      tenderFile: null, // Don't pre-populate the file input on edit
+    });
+    setError("");
+    setSuccess("");
+  };
+
+  // Prompts the user with a confirmation modal before attempting to delete.
+  const handleDelete = (tenderId) => {
+    setTenderToDelete(tenderId);
+    setShowConfirmModal(true);
+  };
+  
+  // Confirms the deletion and sends a DELETE request to the backend.
+  const confirmDelete = async () => {
+    setShowConfirmModal(false);
+    try {
+      setIsLoading(true);
+      const response = await fetch(`http://localhost:5000/tenders/${tenderToDelete}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.msg || "Failed to delete tender.");
+      }
+
+      setSuccess("Tender deleted successfully!");
+      setTenderToDelete(null);
+      fetchTenders(); // Refresh the list
+    } catch (err) {
+      console.error("Deletion error:", err);
+      setError("Failed to delete tender. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // --- Render ---
+
   return (
     <div className="admin-form-container">
-      <h1 className="admin-title">Create New Tender</h1>
-
-      {/* Display error messages in simple, friendly language */}
-      {error && (
-        <div className="alert alert-error" style={{
-          backgroundColor: '#fee2e2',
-          border: '1px solid #fecaca',
-          color: '#dc2626',
-          padding: '12px',
-          borderRadius: '6px',
-          marginBottom: '20px',
-          fontSize: '14px',
-          fontWeight: '500'
-        }}>
-          ⚠️ {error}
-        </div>
-      )}
-      
-      {success && (
-        <div className="alert alert-success" style={{
-          backgroundColor: '#dcfce7',
-          border: '1px solid #bbf7d0',
-          color: '#166534',
-          padding: '12px',
-          borderRadius: '6px',
-          marginBottom: '20px',
-          fontSize: '14px',
-          fontWeight: '500'
-        }}>
-          ✅ {success}
-        </div>
-      )}
+      <h1 className="admin-title">{editingTenderId ? 'Edit Tender' : 'Create New Tender'}</h1>
+      {error && <div className="alert alert-error">{error}</div>}
+      {success && <div className="alert alert-success">{success}</div>}
 
       <form className="tender-form" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="title">Tender Title *</label>
+          <label htmlFor="title">Tender Title</label>
           <input
             type="text"
             id="title"
             name="title"
             value={formData.title}
             onChange={handleChange}
-            placeholder="Enter tender title (at least 3 characters)"
+            placeholder="Enter tender title"
             required
             disabled={isLoading}
-            minLength={3}
           />
-          <small style={{ color: '#666', fontSize: '12px', display: 'block', marginTop: '4px' }}>
-            Must be at least 3 characters long
-          </small>
         </div>
-
+        
         <div className="form-group">
-          <label htmlFor="deadline">Deadline *</label>
+          <label htmlFor="deadline">Deadline</label>
           <input
             type="date"
             id="deadline"
@@ -292,60 +194,86 @@ function AdminTenderForm() {
             onChange={handleChange}
             required
             disabled={isLoading}
-            min={new Date(Date.now() + 24*60*60*1000).toISOString().split('T')[0]} // Tomorrow's date
           />
-          <small style={{ color: '#666', fontSize: '12px', display: 'block', marginTop: '4px' }}>
-            Must be a future date
-          </small>
         </div>
 
         <div className="form-group">
-          <label htmlFor="tenderFile">Tender Document *</label>
+          <label htmlFor="tenderFile">Tender Document (Optional on edit)</label>
           <input
             type="file"
             id="tenderFile"
-            name="tenderFile"
-            ref={fileInputRef} // Attach the ref to the file input
+            name="tenderFile" 
             onChange={handleChange}
-            accept=".pdf,.jpeg,.jpg,.png"
-            required
             disabled={isLoading}
+            ref={fileInputRef}
           />
-          <small style={{ color: '#666', fontSize: '12px', display: 'block', marginTop: '4px' }}>
-            Only PDF, JPEG, JPG, or PNG files. Maximum size: 10MB
-          </small>
-          {formData.tenderFile && (
-            <div style={{ 
-              marginTop: '8px', 
-              padding: '8px', 
-              backgroundColor: '#f0f9ff', 
-              borderRadius: '4px',
-              fontSize: '13px',
-              color: '#0369a1',
-              border: '1px solid #e0f2fe'
-            }}>
-              📄 Selected: {formData.tenderFile.name} ({(formData.tenderFile.size / 1024 / 1024).toFixed(2)} MB)
-            </div>
-          )}
         </div>
 
         <div className="form-actions">
           <Button
-            text="Clear Form"
+            text="Cancel/Reset"
             onClick={handleReset}
             variant="secondary"
             type="button"
             disabled={isLoading}
           />
           <Button
-            text={isLoading ? "Creating Tender..." : "Create Tender"}
-            onClick={handleSubmit}
+            text={isLoading ? "Submitting..." : (editingTenderId ? 'Update Tender' : 'Create Tender')}
             variant="primary"
             type="submit"
             disabled={isLoading}
           />
         </div>
       </form>
+      
+      <div className="tenders-list">
+        <h2 className="tenders-list-title">Existing Tenders</h2>
+        {isLoading ? (
+          <p>Loading tenders...</p>
+        ) : (
+          tenders.map((tender) => (
+            <div key={tender._id} className="tender-card">
+              <h3>{tender.title}</h3>
+              <p>Deadline: {new Date(tender.deadline).toLocaleDateString()}</p>
+              <div className="tender-actions">
+                <Button 
+                  text="Edit"
+                  onClick={() => handleEdit(tender)} 
+                  variant="secondary"
+                  disabled={isLoading}
+                />
+                <Button 
+                  text="Delete"
+                  onClick={() => handleDelete(tender._id)} 
+                  variant="danger"
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+      
+      {showConfirmModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Confirm Deletion</h3>
+            <p>Are you sure you want to delete this tender?</p>
+            <div className="modal-actions">
+              <Button
+                text="Cancel"
+                onClick={() => setShowConfirmModal(false)}
+                variant="secondary"
+              />
+              <Button
+                text="Delete"
+                onClick={confirmDelete}
+                variant="danger"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

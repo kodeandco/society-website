@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 // Configure CORS to allow requests from http://localhost:5173
 const corsOptions = {
     origin: 'http://localhost:5173', // Only allow this origin
-    methods: ['GET', 'POST', 'DELETE', 'PATCH'], // Specify the allowed methods
+    methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'], // Specify the allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Specify the allowed headers
 };
 app.use(cors(corsOptions));

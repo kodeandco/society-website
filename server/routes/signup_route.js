@@ -13,7 +13,6 @@ router.post('/signup', async (req, res) => {
         }
 
         user = await User.create({
-            username,
             email,
             password, // Mongoose pre-save middleware will hash this
         });

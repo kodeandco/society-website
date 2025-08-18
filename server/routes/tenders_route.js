@@ -128,10 +128,48 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// @route   PATCH /tenders/:id
-// @desc    Update a tender by ID
+// @route   PATCH /api/tenders/:id
+// @desc    Update a tender by ID, including an optional file
 // @access  Public (or Private)
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', (req, res) => {
+  upload(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({ msg: err });
+    }
+    
+    try {
+      // The update data comes from the request body
+      const updateData = { ...req.body };
+
+      // If a new file was uploaded, update the file details
+      if (req.file) {
+        updateData.fileName = req.file.originalname;
+        updateData.filePath = req.file.path;
+      }
+
+      const tender = await Tender.findByIdAndUpdate(
+        req.params.id,
+        updateData,
+        { new: true, runValidators: true }
+      );
+
+      if (!tender) {
+        return res.status(404).json({ msg: 'Tender not found' });
+      }
+      res.json(tender);
+    } catch (err) {
+      console.error(err.message);
+      if (err.kind === 'ObjectId') {
+        return res.status(404).json({ msg: 'Tender not found' });
+      }
+      res.status(500).send('Server Error');
+    }
+  });
+});
+
+//.put for editing the tender 
+
+router.put('/:id', async (req, res) => {
     try {
         const tender = await Tender.findByIdAndUpdate(
             req.params.id,
@@ -151,6 +189,8 @@ router.patch('/:id', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+
+
 
 // @route   DELETE /tenders/:id
 // @desc    Delete a tender by ID

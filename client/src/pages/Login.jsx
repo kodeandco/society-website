@@ -49,9 +49,9 @@ const Login = () => {
           <Button text="Login" type="submit" variant="primary" />
         </form>
 
-        <p className="login-footer">
+        {/* <p className="login-footer">
           Don’t have an account? <a href="#">Sign up</a>
-        </p>
+        </p> */}
       </div>
     </div>
   );

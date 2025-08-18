@@ -60,7 +60,52 @@ function TenderCard({ tender, index }) {
       }
     }
   };
+// const handleEdit = async()=>{
+//  try{
+//    const response = await fetch(`http://localhost:5000/tenders/${tender.id}`, {
+//      method: 'PUT',
+//      headers: {
+//        'Content-Type': 'application/json',
+//      },
+//      body: JSON.stringify({
+//        title: 'Updated Tender Title',
+//        deadline: 'Updated Tender Deadline',
+//        fileName: 'Updated File Name',
+//        filePath: 'Updated File Path',
+//      }),
+//    });
 
+//    if (!response.ok) {
+//      throw new Error(`Edit failed: ${response.status}`);
+//    }
+
+//    const updatedTender = await response.json();
+//    console.log('Tender updated successfully:', updatedTender);
+//    alert('Tender updated successfully');
+//  }catch(e){
+//   console.error('Edit error:', e);
+//   alert(`Failed to edit tender: ${e.message}`);
+//  }
+// }
+
+// const handleDelete= async()=>{
+//   try{
+//     const response = await fetch(`http://localhost:5000/tenders/${tender.id}`, {
+//       method: 'DELETE',
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`Delete failed: ${response.status}`);
+//     }
+
+//     console.log('Tender deleted successfully');
+//     alert('Tender deleted successfully');
+//   }catch(e){
+//     console.error('Delete error:', e);
+//     alert(`Failed to delete tender: ${e.message}`);
+//   }
+
+// }
   return (
     <div className="tender-card-item" data-tender-id={tender.id}>
       <div className="tender-header">
@@ -85,6 +130,16 @@ function TenderCard({ tender, index }) {
           onClick={handleDownload}
           variant="primary"
         />
+        {/* <Button
+          text="Edit"
+          onClick={handleEdit}
+          variant="secondary"
+        />
+        <Button
+          text="Delete"
+          onClick={handleDelete}
+          variant="danger"
+        /> */}
       </div>
     </div>
   );
