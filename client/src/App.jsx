@@ -8,7 +8,8 @@ import Map from './components/Map';
 import Footer from './components/Footer';
 import About from './pages/About';
 import Tenders from './pages/Tenders';
-import Login from './pages/Login';  // ✅ Import Login page
+import Login from './pages/Login';
+import AdminTenderForm from './pages/AdminTenderForm.jsx'; // ✅ Import AdminTenderForm
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function Home() {
@@ -56,7 +57,9 @@ function App() {
           <Route path="/amenities" element={<Placeholder title="Amenities" />} />
           <Route path="/gallery" element={<Placeholder title="Gallery" />} />
           <Route path="/contact" element={<Placeholder title="Contact" />} />
-          <Route path="/login" element={<Login />} /> {/* ✅ Login route */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/AdminTenderForm" element={<AdminTenderForm />} /> {/* ✅ Main admin route */}
+          <Route path="/admin/tenders" element={<AdminTenderForm />} /> {/* ✅ Alternative route */}
         </Routes>
         <Footer />
       </div>

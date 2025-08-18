@@ -1,5 +1,6 @@
 import React from 'react';
 import './Tenders.css';
+import TenderCard from './TenderCard';
 
 const tenders = [
   {
@@ -27,17 +28,8 @@ function Tenders() {
     <div className="tenders-container">
       <h1 className="tenders-title">Tenders</h1>
       <div className="tenders-vertical-list">
-        {tenders.map((t, i) => (
-          <div className="tender-card" key={i}>
-            <h2>{t.title}</h2>
-            <div className="tender-dates">
-              <span>Posted: {t.posted}</span>
-              <span>Deadline: {t.deadline}</span>
-            </div>
-            <a className="tender-btn" href={t.download} download>
-              Download Tender Document
-            </a>
-          </div>
+        {tenders.map((tender, index) => (
+          <TenderCard key={index} tender={tender} index={index} />
         ))}
       </div>
     </div>
