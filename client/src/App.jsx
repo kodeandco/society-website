@@ -20,6 +20,7 @@ function Home() {
         <Announce />
         <Infra />
         <Gallery />
+        <AdminTenderForm />
         <Map />
       </div>
     </>

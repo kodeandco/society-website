@@ -9,11 +9,18 @@ const tenderSchema = new mongoose.Schema({
         trim: true, // Trims whitespace from the beginning and end of the string
         minlength: [3, 'Title must be at least 3 characters long.']
     },
-    // A detailed description of the tender.
-    description: {
-        type: String,
-        required: false, // This field is optional.
-        trim: true
+    
+    // The deadline for tender submission
+    deadline: {
+        type: Date,
+        required: [true, 'Deadline is required for a tender.'],
+        validate: {
+            validator: function(value) {
+                // Ensure deadline is in the future
+                return value > new Date();
+            },
+            message: 'Deadline must be a future date.'
+        }
     },
     // The name of the file that was uploaded, useful for displaying to the user.
     fileName: {
@@ -31,10 +38,25 @@ const tenderSchema = new mongoose.Schema({
     uploadDate: {
         type: Date,
         default: Date.now // Sets the default value to the current date and time.
+    },
+    // Status of the tender (active, closed, cancelled)
+    status: {
+        type: String,
+        enum: ['active', 'closed', 'cancelled'],
+        default: 'active'
     }
 }, {
     // Adds `createdAt` and `updatedAt` timestamps automatically.
     timestamps: true
+});
+
+// Index for better query performance
+tenderSchema.index({ deadline: 1, status: 1 });
+tenderSchema.index({ uploadDate: -1 });
+
+// Virtual field to check if tender is expired
+tenderSchema.virtual('isExpired').get(function() {
+    return this.deadline < new Date();
 });
 
 // Create and export the Mongoose model based on the schema.
