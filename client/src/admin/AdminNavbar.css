@@ -1,0 +1,57 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Navbar */
+.admin-navbar {
+  width: 100%;
+  height: 60px;
+  background: #2c3e50;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.admin-logo {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.admin-nav-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.admin-nav-links li {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.admin-nav-links li:hover {
+  color: #1abc9c;
+}
+
+.logout-btn {
+  background: #e74c3c;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #c0392b;
+}
