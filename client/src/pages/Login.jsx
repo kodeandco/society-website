@@ -15,7 +15,28 @@ const Login = () => {
 
     alert("Login Successful (Demo Only)");
   };
+const handleLogin= async()=>{
+  try {
+    const response = await fetch("http://localhost:5000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
+    if (!response.ok) {
+      throw new Error("Failed to log in");
+    }
+
+    const data = await response.json();
+    console.log("Login successful:", data);
+    alert("Login successful!");
+  } catch (error) {
+    console.error("Login error:", error);
+    alert("Login failed. Please try again.");
+  }
+}
   return (
     <div className="login-container">
       <div className="login-card">
@@ -46,12 +67,12 @@ const Login = () => {
           </div>
 
           {/* Using common Button component */}
-          <Button text="Login" type="submit" variant="primary" />
+          <Button text="Login" type="submit" variant="primary" onClick={handleLogin}/>
         </form>
 
-        {/* <p className="login-footer">
+        <p className="login-footer">
           Don’t have an account? <a href="#">Sign up</a>
-        </p> */}
+        </p>
       </div>
     </div>
   );

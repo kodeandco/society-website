@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user_model'); // Adjust path as needed
 
-router.post('/signup', async (req, res) => {
-    const { username, email, password } = req.body;
+router.post('/', async (req, res) => {
+    const {  email, password } = req.body;
 
     try {
         let user = await User.findOne({ email });

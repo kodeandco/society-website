@@ -15,6 +15,7 @@ import Login from './pages/Login';
 import AdminDashboard from './admin/AdminDashboard';
 import AdminTenderForm from './admin/AdminTenderForm';
 import DashboardHome from './admin/DashboardHome';
+import Signup from './pages/Signup';
 
 function Home() {
   return (
@@ -25,6 +26,7 @@ function Home() {
         <Infra />
         <Gallery />
         <Map />
+        <Signup />
       </div>
     </>
   );
