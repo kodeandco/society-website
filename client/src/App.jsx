@@ -1,4 +1,6 @@
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import Nav from './components/Nav';
 import Hero from './components/Hero';
 import Announce from './components/Announce';
@@ -9,8 +11,10 @@ import Footer from './components/Footer';
 import About from './pages/About';
 import Tenders from './pages/Tenders';
 import Login from './pages/Login';
-import AdminTenderForm from './pages/AdminTenderForm.jsx'; // ✅ Import AdminTenderForm
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import AdminDashboard from './admin/AdminDashboard';
+import AdminTenderForm from './admin/AdminTenderForm';
+import DashboardHome from './admin/DashboardHome';
 
 function Home() {
   return (
@@ -20,7 +24,6 @@ function Home() {
         <Announce />
         <Infra />
         <Gallery />
-        <AdminTenderForm />
         <Map />
       </div>
     </>
@@ -50,19 +53,35 @@ function App() {
   return (
     <Router>
       <div className="main-bg">
-        <Nav />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/tenders" element={<Tenders />} />
-          <Route path="/amenities" element={<Placeholder title="Amenities" />} />
-          <Route path="/gallery" element={<Placeholder title="Gallery" />} />
-          <Route path="/contact" element={<Placeholder title="Contact" />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/AdminTenderForm" element={<AdminTenderForm />} /> {/* ✅ Main admin route */}
-          <Route path="/admin/tenders" element={<AdminTenderForm />} /> {/* ✅ Alternative route */}
+          {/* Public Routes */}
+          <Route
+            path="/*"
+            element={
+              <>
+                <Nav />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/tenders" element={<Tenders />} />
+                  <Route path="/amenities" element={<Placeholder title="Amenities" />} />
+                  <Route path="/gallery" element={<Placeholder title="Gallery" />} />
+                  <Route path="/contact" element={<Placeholder title="Contact" />} />
+                  <Route path="/login" element={<Login />} />
+                </Routes>
+                <Footer />
+              </>
+            }
+          />
+
+          {/* Admin Routes */}
+          <Route path="/admin/*" element={<AdminDashboard />}>
+            <Route index element={<DashboardHome />} /> {/* Default dashboard */}
+            <Route path="dashboard" element={<DashboardHome />} />
+            <Route path="tenders" element={<AdminTenderForm />} />
+            {/* Add more admin pages here */}
+          </Route>
         </Routes>
-        <Footer />
       </div>
     </Router>
   );
