@@ -35,31 +35,6 @@ const DashboardHome = () => {
           <div className="text-6xl animate-bounce">🏢</div>
         </div>
       </div>
-
-      {/* Today's Summary */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <h3 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-          📊 Today's Summary
-        </h3>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="text-center p-4 bg-blue-50 rounded-lg">
-            <div className="text-3xl font-bold text-blue-600 mb-2">23</div>
-            <div className="text-gray-600 font-medium">Tender Views</div>
-          </div>
-          <div className="text-center p-4 bg-green-50 rounded-lg">
-            <div className="text-3xl font-bold text-green-600 mb-2">5</div>
-            <div className="text-gray-600 font-medium">Downloads</div>
-          </div>
-          <div className="text-center p-4 bg-purple-50 rounded-lg">
-            <div className="text-3xl font-bold text-purple-600 mb-2">2</div>
-            <div className="text-gray-600 font-medium">New Members</div>
-          </div>
-          <div className="text-center p-4 bg-orange-50 rounded-lg">
-            <div className="text-3xl font-bold text-orange-600 mb-2">1</div>
-            <div className="text-gray-600 font-medium">New Tenders</div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

@@ -6,8 +6,16 @@ function AdminNavbar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log("Logging out...");
-    navigate("/login");
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    
+    if (confirmLogout) {
+      console.log("Logging out...");
+      // Clear admin tokens
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminUser');
+      // Navigate to admin login page
+      navigate("/admin-login");
+    }
   };
 
   return (

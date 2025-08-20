@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import About from './pages/About';
 import Tenders from './pages/Tenders';
 import Login from './pages/Login';
+import AdminLogin from './admin/AdminLogin.jsx'; // Add this import
 
 import AdminDashboard from './admin/AdminDashboard';
 import AdminTenderForm from './admin/AdminTenderForm';
@@ -26,7 +27,6 @@ function Home() {
         <Infra />
         <Gallery />
         <Map />
-        <Signup />
       </div>
     </>
   );
@@ -70,6 +70,7 @@ function App() {
                   <Route path="/gallery" element={<Placeholder title="Gallery" />} />
                   <Route path="/contact" element={<Placeholder title="Contact" />} />
                   <Route path="/login" element={<Login />} />
+                  <Route path="/admin-login" element={<AdminLogin />} />
                 </Routes>
                 <Footer />
               </>
@@ -78,10 +79,12 @@ function App() {
 
           {/* Admin Routes */}
           <Route path="/admin/*" element={<AdminDashboard />}>
-            <Route index element={<DashboardHome />} /> {/* Default dashboard */}
+            <Route index element={<DashboardHome />} />
             <Route path="dashboard" element={<DashboardHome />} />
             <Route path="tenders" element={<AdminTenderForm />} />
-            {/* Add more admin pages here */}
+            <Route path="login" element={<AdminLogin />} />
+            <Route path="settings" element={<Placeholder title="Settings" />} />
+            <Route path="reports" element={<Placeholder title="Gallery/Reports" />} />
           </Route>
         </Routes>
       </div>
