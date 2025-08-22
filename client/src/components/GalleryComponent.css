@@ -1,103 +1,10 @@
-/* Gallery.css */
-
-.gallery-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  background-color: #ffffff;
-}
-
-.page-header {
-  text-align: center;
-  margin-bottom: 3rem;
-  padding-bottom: 2rem;
-  border-bottom: 2px solid #e5e7eb;
-}
-
-.page-title {
-  font-size: 3rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 1rem;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.page-subtitle {
-  font-size: 1.25rem;
-  color: #6b7280;
-  margin-bottom: 0.5rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.6;
-}
-
-.gallery-stats {
-  font-size: 1rem;
-  color: #374151;
-  font-weight: 500;
-  margin-top: 0.75rem;
-}
-
-.error-message {
-  color: #dc2626;
-  font-weight: 500;
-}
-
-/* Loading States */
-.loading-spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 200px;
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #f3f4f6;
-  border-left: 4px solid #3b82f6;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Gallery Sections */
-.gallery-sections {
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
-}
-
-.empty-gallery {
-  text-align: center;
-  padding: 4rem 2rem;
-  background-color: #f9fafb;
-  border-radius: 1rem;
-  border: 2px dashed #d1d5db;
-}
-
-.empty-gallery p {
-  font-size: 1.125rem;
-  color: #6b7280;
-  font-style: italic;
-}
-
-/* Individual Gallery Section */
 .gallery-section {
   background-color: #ffffff;
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
+  margin-bottom: 2rem;
 }
 
 .gallery-section:hover {
@@ -122,6 +29,7 @@
   font-size: 1rem;
   color: #6b7280;
   font-weight: 500;
+  margin: 0;
 }
 
 .gallery-count.error {
@@ -271,22 +179,6 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .gallery-page {
-    padding: 1rem;
-  }
-  
-  .page-title {
-    font-size: 2.5rem;
-  }
-  
-  .page-subtitle {
-    font-size: 1.125rem;
-  }
-  
-  .gallery-sections {
-    gap: 3rem;
-  }
-  
   .gallery-header {
     padding: 1.5rem;
   }
@@ -307,14 +199,6 @@
 }
 
 @media (max-width: 480px) {
-  .gallery-page {
-    padding: 0.75rem;
-  }
-  
-  .page-title {
-    font-size: 2rem;
-  }
-  
   .gallery-grid {
     grid-template-columns: 1fr;
     gap: 0.75rem;
@@ -323,9 +207,4 @@
   
   .gallery-header {
     padding: 1rem;
-  }
-  
-  .gallery-title {
-    font-size: 1.25rem;
   }}
-  

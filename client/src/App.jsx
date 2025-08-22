@@ -5,7 +5,8 @@ import Nav from './components/Nav';
 import Hero from './components/Hero';
 import Announce from './components/Announce';
 import Infra from './components/Infra';
-import Gallery from './components/Gallery';
+import Gallery from './components/GalleryComponent';
+import GalleryPage from './pages/Gallery.jsx';
 import Map from './components/Map';
 import Footer from './components/Footer';
 import About from './pages/About';
@@ -17,6 +18,7 @@ import AdminDashboard from './admin/AdminDashboard';
 import AdminTenderForm from './admin/AdminTenderForm';
 import DashboardHome from './admin/DashboardHome';
 import Signup from './pages/Signup';
+import AdminGalleryForm from './admin/AdminGalleryForm.jsx';
 
 function Home() {
   return (
@@ -67,7 +69,7 @@ function App() {
                   <Route path="/about" element={<About />} />
                   <Route path="/tenders" element={<Tenders />} />
                   <Route path="/amenities" element={<Placeholder title="Amenities" />} />
-                  <Route path="/gallery" element={<Placeholder title="Gallery" />} />
+                  <Route path="/gallery" element={<GalleryPage title="Gallery" />} />
                   <Route path="/contact" element={<Placeholder title="Contact" />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/admin-login" element={<AdminLogin />} />
@@ -82,6 +84,7 @@ function App() {
             <Route index element={<DashboardHome />} />
             <Route path="dashboard" element={<DashboardHome />} />
             <Route path="tenders" element={<AdminTenderForm />} />
+            <Route path="gallery" element={<AdminGalleryForm title="Gallery Management" />} />
             <Route path="login" element={<AdminLogin />} />
             <Route path="settings" element={<Placeholder title="Settings" />} />
             <Route path="reports" element={<Placeholder title="Gallery/Reports" />} />
