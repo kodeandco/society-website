@@ -7,6 +7,7 @@ const gallerySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  
   // 'category' is a string to store the selected category.
   category: {
     type: String,
