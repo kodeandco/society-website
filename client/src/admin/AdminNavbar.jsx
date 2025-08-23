@@ -25,8 +25,10 @@ function AdminNavbar() {
       <ul className="admin-nav-links">
         <li onClick={() => navigate("/admin/dashboard")}>Dashboard</li>
         <li onClick={() => navigate("/admin/tenders")}>Tenders</li>
+        <li onClick={() => navigate("/admin/gallery")}>Gallery</li>
         <li onClick={() => navigate("/admin/users")}>Users</li>
         <li onClick={() => navigate("/admin/settings")}>Settings</li>
+        
       </ul>
 
       <button className="logout-btn" onClick={handleLogout}>
