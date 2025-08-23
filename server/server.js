@@ -21,9 +21,12 @@ const corsOptions = {
     allowedHeaders: ['Content-Type', 'Authorization'], // Specify the allowed headers
 };
 app.use(cors(corsOptions));
-
 // Middleware to parse JSON bodies - MUST BE BEFORE ROUTES
-app.use(express.json());
+// Increase the body limit to 50MB to handle large Base64 image strings.
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+
 
 // API Routes
 app.use('/login', loginRoute);
