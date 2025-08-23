@@ -11,7 +11,7 @@ function GalleryCard({ image, index }) {
       
       <div className="gallery-image-container">
         <img 
-          src={image.url} 
+          src={image.image} 
           className="gallery-image"
           loading="lazy"
         />
@@ -22,10 +22,7 @@ function GalleryCard({ image, index }) {
           <span className="detail-label">Category:</span>
           <span className="detail-value">{image.category || 'General'}</span>
         </div>
-        <div className="image-details">
-          <span className="detail-label">Date:</span>
-          <span className="detail-value">{image.date}</span>
-        </div>
+        
       </div>
       
     

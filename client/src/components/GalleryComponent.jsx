@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import GalleryCard from "./GalleryCard";
 import './GalleryComponent.css';
 
-function GalleryComponent({ title, category, photoCount = 0 }) {
+// This component fetches and displays images for a specific category from the backend.
+function Gallery({ title, category, photoCount = 0 }) {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showAll, setShowAll] = useState(false);
 
-  // Number of images to show initially
   const INITIAL_DISPLAY_COUNT = 6;
 
   useEffect(() => {
@@ -16,8 +17,9 @@ function GalleryComponent({ title, category, photoCount = 0 }) {
         setIsLoading(true);
         setError(null);
         
-        // Fetch images for this specific category
-        const response = await fetch(`http://localhost:5000/gallery?category=${encodeURIComponent(category)}`);
+        // Corrected URL to match the server.js file
+        const response = await fetch(`http://localhost:5000/photogallery?category=${encodeURIComponent(category)}`);
+        
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -35,9 +37,8 @@ function GalleryComponent({ title, category, photoCount = 0 }) {
     if (category) {
       fetchImages();
     }
-  }, [category]);
+  }, [category]); // Rerun the fetch when the category prop changes
 
-  // Determine which images to display
   const displayImages = showAll ? images : images.slice(0, INITIAL_DISPLAY_COUNT);
   const hasMoreImages = images.length > INITIAL_DISPLAY_COUNT;
 
@@ -95,23 +96,11 @@ function GalleryComponent({ title, category, photoCount = 0 }) {
       
       <div className="gallery-grid">
         {displayImages.map((image, index) => (
-          <div key={image._id || index} className="gallery-item">
-            <img
-              src={image.url}
-              alt={`${title} - Photo ${index + 1}`}
-              className="gallery-image"
-              loading="lazy"
-              onError={(e) => {
-                e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5YTNhZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIFVuYXZhaWxhYmxlPC90ZXh0Pjwvc3ZnPg==';
-                e.target.classList.add('error');
-              }}
-            />
-            <div className="gallery-overlay">
-              <p className="image-date">
-                {new Date(image.createdAt).toLocaleDateString()}
-              </p>
-            </div>
-          </div>
+          <GalleryCard
+            key={image._id || index}
+            image={image}
+            index={index}
+          />
         ))}
       </div>
       
@@ -129,4 +118,4 @@ function GalleryComponent({ title, category, photoCount = 0 }) {
   );
 }
 
-export default GalleryComponent;
+export default Gallery;

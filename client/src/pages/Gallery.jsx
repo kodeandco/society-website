@@ -12,7 +12,8 @@ function GalleryPage() {
     const fetchCategories = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('http://localhost:5000/gallery/categories');
+        // Corrected URL to match your server.js file
+        const response = await fetch('http://localhost:5000/photogallery/categories');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

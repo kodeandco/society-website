@@ -21,8 +21,8 @@ router.post('/', async (req, res) => {
 });
 
 // GET route to fetch all gallery items, sorted by category first, then by creation date
-// Optional category filter: /api/galleries?category=nature
-// Optional grouped response: /api/galleries?grouped=true (returns items grouped by category)
+// Optional category filter: //galleries?category=nature
+// Optional grouped response: //galleries?grouped=true (returns items grouped by category)
 router.get('/', async (req, res) => {
   try {
     const { category, grouped } = req.query;
@@ -86,7 +86,7 @@ router.get('/categories', async (req, res) => {
 
 // PUT route to update a gallery item by its ID
 // The :id in the image is the unique ID of the document you want to update.
-// Example image: /api/galleries/60c72b2f9b1d8e001f3e7b1a
+// Example image: //galleries/60c72b2f9b1d8e001f3e7b1a
 // Example request body: { "image": "https://example.com/updated-image.jpg", "category": "urban" }
 router.put('/:id', async (req, res) => {
   try {
@@ -113,7 +113,7 @@ router.put('/:id', async (req, res) => {
 
 // DELETE route to delete a gallery item by its ID
 // The :id in the image is the unique ID of the document you want to delete.
-// Example image: /api/galleries/60c72b2f9b1d8e001f3e7b1a
+// Example image: //galleries/60c72b2f9b1d8e001f3e7b1a
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
