@@ -3,14 +3,14 @@ const router = express.Router();
 const Gallery = require('../models/gallery_model');
 
 // POST route to create a new gallery item
-// Example request body: { "url": "https://example.com/image.jpg", "category": "nature" }
+// Example request body: { "image": "https://example.com/image.jpg", "category": "nature" }
 router.post('/', async (req, res) => {
   try {
-    const { url, category } = req.body;
+    const { image, category } = req.body;
     
     // Create and save the new gallery item
     const newGalleryItem = await Gallery.create({
-      url,
+      image,
       category,
     });
     
@@ -85,19 +85,19 @@ router.get('/categories', async (req, res) => {
 });
 
 // PUT route to update a gallery item by its ID
-// The :id in the URL is the unique ID of the document you want to update.
-// Example URL: /api/galleries/60c72b2f9b1d8e001f3e7b1a
-// Example request body: { "url": "https://example.com/updated-image.jpg", "category": "urban" }
+// The :id in the image is the unique ID of the document you want to update.
+// Example image: /api/galleries/60c72b2f9b1d8e001f3e7b1a
+// Example request body: { "image": "https://example.com/updated-image.jpg", "category": "urban" }
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { url, category } = req.body;
+    const { image, category } = req.body;
     
     // findByIdAndUpdate finds a document by its _id and updates it.
     // { new: true } returns the updated document instead of the original one.
     const updatedGalleryItem = await Gallery.findByIdAndUpdate(
       id,
-      { url, category },
+      { image, category },
       { new: true, runValidators: true }
     );
     
@@ -112,8 +112,8 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE route to delete a gallery item by its ID
-// The :id in the URL is the unique ID of the document you want to delete.
-// Example URL: /api/galleries/60c72b2f9b1d8e001f3e7b1a
+// The :id in the image is the unique ID of the document you want to delete.
+// Example image: /api/galleries/60c72b2f9b1d8e001f3e7b1a
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;

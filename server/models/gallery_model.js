@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 // Define the schema for a single gallery item
 const gallerySchema = new mongoose.Schema({
-  // 'base64' is used to store the image data as a string.
-  base64: {
+  // 'image' is used to store the image data as a string.
+  image: {
     type: String,
     required: true,
   },

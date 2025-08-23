@@ -5,7 +5,7 @@ import "./AdminGalleryForm.css";
 // This is the main form component for creating and managing gallery items.
 function AdminGalleryForm() {
   const [formData, setFormData] = useState({
-    url: "",
+    image: "",
     category: "",
     imageFile: null,
   });
@@ -36,7 +36,7 @@ function AdminGalleryForm() {
   const fetchGalleryItems = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('http://localhost:5000/gallery');
+      const response = await fetch('http://localhost:5000/photogallery');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -60,16 +60,23 @@ function AdminGalleryForm() {
     const { name, value, files } = e.target;
     setError("");
     setSuccess("");
-    setFormData({
-      ...formData,
-      [name]: files ? files[0] : value,
-    });
+    if (name === "imageFile") {
+      setFormData({
+        ...formData,
+        imageFile: files[0],
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   // Resets the form and clears any success/error messages.
   const handleReset = () => {
     setFormData({
-      url: "",
+      image: "",
       category: "",
       imageFile: null,
     });
@@ -88,83 +95,88 @@ function AdminGalleryForm() {
     setError("");
     setSuccess("");
 
-    const galleryData = new FormData();
-    galleryData.append("url", formData.url);
-    galleryData.append("category", formData.category);
-    if (formData.imageFile) {
-      galleryData.append("imageFile", formData.imageFile);
+    if (!formData.imageFile) {
+        setError("Please upload an image file.");
+        setIsLoading(false);
+        return;
     }
 
     try {
-      let response;
-      if (editingItemId) {
-        // Edit existing gallery item via PATCH request
-        response = await fetch(`http://localhost:5000/gallery/${editingItemId}`, {
-          method: 'PATCH',
-          body: galleryData,
-        });
-      } else {
-        // Create new gallery item via POST request
-        response = await fetch('http://localhost:5000/gallery', {
-          method: 'POST',
-          body: galleryData,
-        });
-      }
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+            let payload = {
+                image: reader.result, // The Base64 string
+                category: formData.category
+            };
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.msg || "An unexpected error occurred.");
-      }
+            let response;
+            const headers = { 'Content-Type': 'application/json' };
 
-      setSuccess(`Gallery item ${editingItemId ? 'updated' : 'created'} successfully!`);
-      handleReset();
-      fetchGalleryItems(); // Refresh the list of gallery items
+            if (editingItemId) {
+                response = await fetch(`http://localhost:5000/photogallery/${editingItemId}`, {
+                    method: 'PUT',
+                    headers: headers,
+                    body: JSON.stringify(payload),
+                });
+            } else {
+                response = await fetch('http://localhost:5000/photogallery', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(payload),
+                });
+            }
 
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || "An unexpected error occurred.");
+            }
+
+            setSuccess(`Gallery item ${editingItemId ? 'updated' : 'created'} successfully!`);
+            handleReset();
+            fetchGalleryItems(); 
+        };
+        reader.readAsDataURL(formData.imageFile);
     } catch (err) {
-      console.error("Submission error:", err);
-      setError(`Failed to ${editingItemId ? 'update' : 'create'} gallery item. Please try again.`);
+        console.error("Submission error:", err);
+        setError(`Failed to ${editingItemId ? 'update' : 'create'} gallery item. Please try again.`);
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
   };
 
   // --- Edit and Delete Handlers ---
-
-  // Sets the form to edit mode with the selected gallery item's data.
   const handleEdit = (item) => {
     setEditingItemId(item._id);
     setFormData({
-      url: item.url,
+      image: item.image,
       category: item.category,
-      imageFile: null, // Don't pre-populate the file input on edit
+      imageFile: null,
     });
     setError("");
     setSuccess("");
   };
 
-  // Prompts the user with a confirmation modal before attempting to delete.
   const handleDelete = (itemId) => {
     setItemToDelete(itemId);
     setShowConfirmModal(true);
   };
   
-  // Confirms the deletion and sends a DELETE request to the backend.
   const confirmDelete = async () => {
     setShowConfirmModal(false);
     try {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:5000/gallery/${itemToDelete}`, {
+      const response = await fetch(`http://localhost:5000/photogallery/${itemToDelete}`, {
         method: 'DELETE',
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.msg || "Failed to delete gallery item.");
+        throw new Error(errorData.message || "Failed to delete gallery item.");
       }
 
       setSuccess("Gallery item deleted successfully!");
       setItemToDelete(null);
-      fetchGalleryItems(); // Refresh the list
+      fetchGalleryItems(); 
     } catch (err) {
       console.error("Deletion error:", err);
       setError("Failed to delete gallery item. Please try again.");
@@ -173,7 +185,6 @@ function AdminGalleryForm() {
     }
   };
 
-  // Group gallery items by category for better organization
   const groupedItems = galleryItems.reduce((acc, item) => {
     if (!acc[item.category]) {
       acc[item.category] = [];
@@ -182,8 +193,6 @@ function AdminGalleryForm() {
     return acc;
   }, {});
 
-  // --- Render ---
-
   return (
     <div className="admin-form-container">
       <h1 className="admin-title">{editingItemId ? 'Edit Gallery Item' : 'Add New Gallery Item'}</h1>
@@ -191,8 +200,7 @@ function AdminGalleryForm() {
       {success && <div className="alert alert-success">{success}</div>}
 
       <form className="gallery-form" onSubmit={handleSubmit}>
-     
-       <div className="form-group">
+        <div className="form-group">
           <label htmlFor="imageFile">Upload Image File</label>
           <input
             type="file"
@@ -203,7 +211,6 @@ function AdminGalleryForm() {
             disabled={isLoading}
             ref={fileInputRef}
           />
-          <small className="form-help">You can either provide a URL or upload a file, not both.</small>
         </div>
         
         <div className="form-group">
@@ -222,8 +229,6 @@ function AdminGalleryForm() {
             ))}
           </select>
         </div>
-
-      
 
         <div className="form-actions">
           <Button
@@ -257,7 +262,7 @@ function AdminGalleryForm() {
                   <div key={item._id} className="gallery-card">
                     <div className="gallery-image-container">
                       <img 
-                        src={item.url} 
+                        src={item.image} 
                         alt={`Gallery item in ${item.category}`}
                         className="gallery-thumbnail"
                         onError={(e) => {
@@ -266,11 +271,6 @@ function AdminGalleryForm() {
                       />
                     </div>
                     <div className="gallery-card-content">
-                      <div className="gallery-url">
-                        <a href={item.url} target="_blank" rel="noopener noreferrer" className="url-link">
-                          {item.url.length > 50 ? `${item.url.substring(0, 47)}...` : item.url}
-                        </a>
-                      </div>
                       <p className="gallery-meta">Added: {new Date(item.createdAt).toLocaleDateString()}</p>
                       <div className="gallery-actions">
                         <Button 
