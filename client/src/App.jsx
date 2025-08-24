@@ -13,12 +13,12 @@ import About from './pages/About';
 import Tenders from './pages/Tenders';
 import Login from './pages/Login';
 import AdminLogin from './admin/AdminLogin.jsx'; // Add this import
-
 import AdminDashboard from './admin/AdminDashboard';
 import AdminTenderForm from './admin/AdminTenderForm';
 import DashboardHome from './admin/DashboardHome';
 import Signup from './pages/Signup';
 import AdminGalleryForm from './admin/AdminGalleryForm.jsx';
+import Contact from './pages/Contact'; // Add this import
 
 function Home() {
   return (
@@ -27,7 +27,6 @@ function Home() {
       <div className="main-content">
         <Announce />
         <Infra />
-        <Gallery />
         <Map />
       </div>
     </>
@@ -70,7 +69,7 @@ function App() {
                   <Route path="/tenders" element={<Tenders />} />
                   <Route path="/amenities" element={<Placeholder title="Amenities" />} />
                   <Route path="/gallery" element={<GalleryPage title="Gallery" />} />
-                  <Route path="/contact" element={<Placeholder title="Contact" />} />
+                  <Route path="/contact" element={<Contact />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/admin-login" element={<AdminLogin />} />
                 </Routes>
@@ -78,7 +77,7 @@ function App() {
               </>
             }
           />
-
+          
           {/* Admin Routes */}
           <Route path="/admin/*" element={<AdminDashboard />}>
             <Route index element={<DashboardHome />} />
