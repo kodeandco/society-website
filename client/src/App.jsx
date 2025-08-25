@@ -57,20 +57,29 @@ function App() {
     <Router>
       <div className="main-bg">
         <Routes>
-          {/* Public Routes with Nav and Footer */}
-          <Route element={<><Nav /><Outlet /><Footer /></>}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/tenders" element={<Tenders />} />
-            <Route path="/amenities" element={<Placeholder title="Amenities" />} />
-            <Route path="/gallery" element={<GalleryPage title="Gallery" />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/admin-login" element={<AdminLogin />} />
-          </Route>
+          {/* Public Routes */}
+          <Route
+            path="/*"
+            element={
+              <>
+                <Nav />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/tenders" element={<Tenders />} />
+                  <Route path="/amenities" element={<Placeholder title="Amenities" />} />
+                  <Route path="/gallery" element={<GalleryPage title="Gallery" />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/admin-login" element={<AdminLogin />} />
+                </Routes>
+                <Footer />
+              </>
+            }
+          />
           
-          {/* Admin Routes without Nav/Footer */}
-          <Route path="/admin" element={<AdminDashboard />}>
+          {/* Admin Routes */}
+          <Route path="/admin/*" element={<AdminDashboard />}>
             <Route index element={<DashboardHome />} />
             <Route path="dashboard" element={<DashboardHome />} />
             <Route path="tenders" element={<AdminTenderForm />} />
@@ -86,4 +95,3 @@ function App() {
 }
 
 export default App;
-// this should work now
