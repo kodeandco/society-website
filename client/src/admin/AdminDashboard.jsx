@@ -22,25 +22,11 @@ function AdminDashboard() {
 
       <div className="admin-body">
         {/* Sidebar */}
-        <aside className="sidebar">
           <div className="sidebar-header">
             <h3>Admin Panel</h3>
           </div>
-          <ul className="sidebar-menu">
-            <li className="sidebar-item" onClick={() => navigate("/admin/dashboard")}>
-              <span className="sidebar-icon">🏠</span> Dashboard
-            </li>
-            <li className="sidebar-item" onClick={() => navigate("/admin/tenders")}>
-              <span className="sidebar-icon">📑</span> Tenders
-            </li>
-            <li className="sidebar-item" onClick={() => navigate("/admin/reports")}>
-              <span className="sidebar-icon">📊</span> Reports
-            </li>
-            <li className="sidebar-item" onClick={() => navigate("/admin/settings")}>
-              <span className="sidebar-icon">⚙️</span> Settings
-            </li>
-          </ul>
-        </aside>
+          
+ 
 
         {/* Main Content */}
         <main className="main-content">
