@@ -57,29 +57,20 @@ function App() {
     <Router>
       <div className="main-bg">
         <Routes>
-          {/* Public Routes */}
-          <Route
-            path="/*"
-            element={
-              <>
-                <Nav />
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/tenders" element={<Tenders />} />
-                  <Route path="/amenities" element={<Placeholder title="Amenities" />} />
-                  <Route path="/gallery" element={<GalleryPage title="Gallery" />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/admin-login" element={<AdminLogin />} />
-                </Routes>
-                <Footer />
-              </>
-            }
-          />
+          {/* Public Routes with Nav and Footer */}
+          <Route element={<><Nav /><Outlet /><Footer /></>}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/tenders" element={<Tenders />} />
+            <Route path="/amenities" element={<Placeholder title="Amenities" />} />
+            <Route path="/gallery" element={<GalleryPage title="Gallery" />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/admin-login" element={<AdminLogin />} />
+          </Route>
           
-          {/* Admin Routes */}
-          <Route path="/admin/*" element={<AdminDashboard />}>
+          {/* Admin Routes without Nav/Footer */}
+          <Route path="/admin" element={<AdminDashboard />}>
             <Route index element={<DashboardHome />} />
             <Route path="dashboard" element={<DashboardHome />} />
             <Route path="tenders" element={<AdminTenderForm />} />
