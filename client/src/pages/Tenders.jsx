@@ -37,7 +37,7 @@ function Tenders() {
       setIsLoading(true);
       setError("");
 
-      const response = await fetch('http://localhost:5000/tenders');
+      const response = await fetch('https://society-website-cpd3.onrender.com/tenders');
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

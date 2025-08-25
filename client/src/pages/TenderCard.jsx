@@ -13,7 +13,7 @@ function TenderCard({ tender, index }) {
       }
 
       // Make request to download endpoint
-      const response = await fetch(`http://localhost:5000/tenders/download/${tender.id}`);
+      const response = await fetch(`https://society-website-cpd3.onrender.com/tenders/download/${tender.id}`);
       
       if (!response.ok) {
         throw new Error(`Download failed: ${response.status}`);

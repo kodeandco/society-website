@@ -13,7 +13,7 @@ function GalleryPage() {
       try {
         setIsLoading(true);
         // Corrected URL to match your server.js file
-        const response = await fetch('http://localhost:5000/photogallery/categories');
+        const response = await fetch('https://society-website-cpd3.onrender.com/photogallery/categories');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

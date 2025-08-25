@@ -18,7 +18,7 @@ function Gallery({ title, category, photoCount = 0 }) {
         setError(null);
         
         // Corrected URL to match the server.js file
-        const response = await fetch(`http://localhost:5000/photogallery?category=${encodeURIComponent(category)}`);
+        const response = await fetch(`https://society-website-cpd3.onrender.com/photogallery?category=${encodeURIComponent(category)}`);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

@@ -36,7 +36,7 @@ function AdminGalleryForm() {
   const fetchGalleryItems = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('http://localhost:5000/photogallery');
+      const response = await fetch('https://society-website-cpd3.onrender.com/photogallery');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -113,13 +113,13 @@ function AdminGalleryForm() {
             const headers = { 'Content-Type': 'application/json' };
 
             if (editingItemId) {
-                response = await fetch(`http://localhost:5000/photogallery/${editingItemId}`, {
+                response = await fetch(`https://society-website-cpd3.onrender.com/photogallery/${editingItemId}`, {
                     method: 'PUT',
                     headers: headers,
                     body: JSON.stringify(payload),
                 });
             } else {
-                response = await fetch('http://localhost:5000/photogallery', {
+                response = await fetch('https://society-website-cpd3.onrender.com/photogallery', {
                     method: 'POST',
                     headers: headers,
                     body: JSON.stringify(payload),
@@ -165,7 +165,7 @@ function AdminGalleryForm() {
     setShowConfirmModal(false);
     try {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:5000/photogallery/${itemToDelete}`, {
+      const response = await fetch(`https://society-website-cpd3.onrender.com/photogallery/${itemToDelete}`, {
         method: 'DELETE',
       });
 
