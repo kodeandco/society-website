@@ -72,7 +72,6 @@ function App() {
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/admin-login" element={<AdminLogin />} />
-                   <Route index element={<DashboardHome />} />
             <Route path="admin/dashboard" element={<DashboardHome />} />
             <Route path="admin/tenders" element={<AdminTenderForm />} />
             <Route path="admin/gallery" element={<AdminGalleryForm title="Gallery Management" />} />
