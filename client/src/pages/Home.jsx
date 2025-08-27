@@ -8,12 +8,11 @@ import "./Home.css";
 function Home() {
   return (
     <div className="home-container">
-      {/* === Hero Section === */}
+      {/* === Hero Section with Head Image === */}
       <section className="hero-section">
-        <div className="hero-content">
-          <h1>Kendriya Vihar Phase - 2</h1>
-          <p>Modern living, green spaces, and a vibrant community in Kolkata.</p>
-          <a href="/about" className="hero-btn">Explore More</a>
+        <div className="hero-bg"></div>
+        <div className="hero-overlay">
+          <h1>Welcome to Kendriya Vihar Phase - 2</h1>
         </div>
       </section>
 

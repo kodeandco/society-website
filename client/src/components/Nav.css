@@ -1,60 +1,43 @@
-/* === NAVBAR VARIABLES === */
-:root {
-  --primary: #111;
-  --primary-light: #222;
-  --accent: #fff;
-  --bg: #fafafa;
-  --card-bg: #fff;
-  --text: #181818;
-  --muted: #888;
-  --shadow: 0 4px 32px rgba(0,0,0,0.06);
-  --border: #e5e5e5;
-  --content-padding: clamp(1rem, 4vw, 3rem);
-  --active-color: #2563eb;
-  --active-bg: #eff6ff;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-/* === NAVBAR === */
+/* Base Navbar Styles */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.2rem var(--content-padding);
+  padding: 1.2rem 3vw;
   background: var(--card-bg);
   box-shadow: var(--shadow);
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 1000;
   border-bottom: 1px solid var(--border);
-  width: 100%;
-  backdrop-filter: blur(8px);
 }
 
 .navbar-logo {
   font-weight: 900;
-  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-size: 2rem;
   color: var(--primary);
-  letter-spacing: 0.5px;
+  letter-spacing: 1.5px;
   font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-  line-height: 1.2;
-  max-width: 60%;
+  z-index: 1001;
 }
 
+.navbar-logo a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar-logo a:hover {
+  color: var(--primary-light);
+}
+
+/* Desktop Navigation Links */
 .navbar-links {
   list-style: none;
   display: flex;
-  gap: clamp(0.5rem, 2vw, 1.5rem);
+  gap: 2.5rem;
   margin: 0;
   padding: 0;
-  align-items: center;
-}
-
-.navbar-links li {
-  display: flex;
   align-items: center;
 }
 
@@ -62,43 +45,28 @@
   color: var(--primary);
   text-decoration: none;
   font-weight: 500;
-  font-size: clamp(0.85rem, 1.8vw, 1rem);
-  letter-spacing: 0.3px;
-  padding: 0.6rem clamp(0.8rem, 1.5vw, 1.2rem);
+  font-size: 1.08rem;
+  letter-spacing: 0.5px;
+  padding: 0.4rem 1rem;
   border-radius: 8px;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: nowrap;
+  transition: all 0.3s ease;
   position: relative;
-  display: block;
 }
 
 .navbar-links a:hover {
-  color: var(--active-color);
-  background: var(--active-bg);
+  color: var(--accent);
+  background: var(--primary);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
 }
 
 .navbar-links a.active {
-  color: var(--active-color);
-  background: var(--active-bg);
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.12);
+  color: var(--accent);
+  background: var(--primary);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
 }
 
-.navbar-links a.active::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  background: var(--active-color);
-  border-radius: 50%;
-}
-
-/* === HAMBURGER MENU === */
+/* Hamburger Menu */
 .navbar-hamburger {
   display: none;
   flex-direction: column;
@@ -107,183 +75,298 @@
   width: 40px;
   height: 40px;
   cursor: pointer;
-  z-index: 30;
-  border-radius: 8px;
-  transition: background 0.2s;
-  padding: 8px;
+  z-index: 1001;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
 }
 
 .navbar-hamburger:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background-color: rgba(0,0,0,0.05);
 }
 
 .navbar-hamburger span {
   display: block;
-  width: 24px;
+  width: 28px;
   height: 3px;
   margin: 3px 0;
   background: var(--primary);
-  border-radius: 3px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   transform-origin: center;
 }
 
-/* Hamburger animation when open */
+/* Hamburger Animation */
 .navbar-hamburger.open span:nth-child(1) {
   transform: rotate(45deg) translate(6px, 6px);
 }
 
 .navbar-hamburger.open span:nth-child(2) {
   opacity: 0;
+  transform: scale(0);
 }
 
 .navbar-hamburger.open span:nth-child(3) {
   transform: rotate(-45deg) translate(6px, -6px);
 }
 
-/* === RESPONSIVE BREAKPOINTS === */
-@media (max-width: 1024px) {
-  .navbar-links {
-    gap: clamp(0.3rem, 1.5vw, 1rem);
-  }
-  
-  .navbar-links a {
-    padding: 0.5rem clamp(0.6rem, 1.2vw, 1rem);
-    font-size: clamp(0.8rem, 1.6vw, 0.95rem);
-  }
+/* Mobile Menu Overlay */
+.navbar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
-@media (max-width: 768px) {
+.navbar-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Responsive Breakpoints */
+
+/* Large tablets and small desktops */
+@media screen and (max-width: 1024px) {
   .navbar {
-    padding: 1rem clamp(1rem, 3vw, 2rem);
+    padding: 1rem 2vw;
+  }
+  
+  .navbar-links {
+    gap: 2rem;
   }
   
   .navbar-logo {
-    font-size: clamp(1.1rem, 3vw, 1.4rem);
-    max-width: 70%;
+    font-size: 1.8rem;
   }
-  
-  /* Mobile nav hidden by default */
-  .navbar-links {
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: var(--card-bg);
-    width: min(85vw, 350px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-    border-radius: 0 0 16px 16px;
-    z-index: 25;
-    gap: 0;
-    border-top: 1px solid var(--border);
-    backdrop-filter: blur(12px);
+}
 
-    /* animation setup */
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.35s ease, opacity 0.35s ease;
-    opacity: 0;
+/* Tablets */
+@media screen and (max-width: 900px) {
+  .navbar {
+    padding: 1rem 2vw;
   }
   
-  .navbar-links.open {
-    max-height: 500px; /* enough for all links */
-    opacity: 1;
+  .navbar-links {
+    gap: 1.5rem;
   }
   
-  .navbar-links li {
-    width: 100%;
+  .navbar-logo {
+    font-size: 1.6rem;
+    letter-spacing: 1px;
   }
-  
-  .navbar-links a {
-    display: block;
-    width: 100%;
-    font-size: 1.1rem;
-    padding: 1rem 2rem;
-    border-radius: 0;
-    text-align: left;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    transition: all 0.2s;
+}
+
+/* Mobile Devices */
+@media screen and (max-width: 768px) {
+  .navbar {
+    padding: 1rem 4vw;
+    position: relative;
   }
-  
-  .navbar-links li:last-child a {
-    border-bottom: none;
-  }
-  
-  .navbar-links a:hover {
-    background: var(--active-bg);
-    transform: translateX(8px);
-    padding-left: 2.5rem;
-  }
-  
-  .navbar-links a.active {
-    background: var(--active-bg);
-    border-left: 4px solid var(--active-color);
-    font-weight: 600;
-  }
-  
-  .navbar-links a.active::after {
-    display: none;
-  }
-  
+
   .navbar-hamburger {
     display: flex;
   }
+
+  .navbar-overlay {
+    display: block;
+  }
+
+  .navbar-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 85vw;
+    max-width: 350px;
+    height: 100vh;
+    background: var(--card-bg);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 6rem 0 2rem 0;
+    gap: 0;
+    box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+    transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 1000;
+    overflow-y: auto;
+    border-left: 1px solid var(--border);
+  }
+
+  .navbar-links.open {
+    right: 0;
+  }
+
+  .navbar-links li {
+    width: 100%;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .navbar-links li:last-child {
+    border-bottom: none;
+  }
+
+  .navbar-links a {
+    display: block;
+    width: 100%;
+    padding: 1.2rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 0;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+  }
+
+  .navbar-links a:hover {
+    background: var(--bg);
+    color: var(--primary);
+    border-left-color: var(--primary);
+    transform: translateX(8px);
+    box-shadow: none;
+  }
+
+  .navbar-links a.active {
+    background: var(--primary);
+    color: var(--accent);
+    border-left-color: var(--accent);
+    box-shadow: none;
+  }
+
+  .navbar-logo {
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+  }
 }
 
-@media (max-width: 480px) {
+/* Small Mobile Devices */
+@media screen and (max-width: 640px) {
   .navbar {
-    padding: 1rem;
+    padding: 0.8rem 5vw;
   }
-  
+
+  .navbar-links {
+    width: 90vw;
+    max-width: 320px;
+  }
+
+  .navbar-links a {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+
   .navbar-logo {
     font-size: 1.2rem;
-    max-width: 75%;
-    line-height: 1.1;
-  }
-  
-  .navbar-links {
-    width: 95vw;
-  }
-  
-  .navbar-links a {
-    font-size: 1.05rem;
-    padding: 0.9rem 1.5rem;
   }
 }
 
-@media (max-width: 360px) {
+/* Extra Small Mobile Devices */
+@media screen and (max-width: 480px) {
+  .navbar {
+    padding: 0.8rem 4vw;
+    height: auto;
+    min-height: 60px;
+  }
+
+  .navbar-links {
+    width: 95vw;
+    max-width: 300px;
+    padding-top: 5rem;
+  }
+
+  .navbar-links a {
+    padding: 0.9rem 1.2rem;
+    font-size: 0.95rem;
+  }
+
   .navbar-logo {
     font-size: 1.1rem;
-    letter-spacing: 0.2px;
+    line-height: 1.2;
   }
-  
+
   .navbar-hamburger {
     width: 36px;
     height: 36px;
   }
-  
+
   .navbar-hamburger span {
-    width: 20px;
+    width: 24px;
     height: 2px;
   }
 }
 
-/* === ACCESSIBILITY === */
-@media (prefers-reduced-motion: reduce) {
-  .navbar-links a,
-  .navbar-hamburger span,
-  .navbar-links.open {
-    transition: none;
-    animation: none;
+/* Very Small Mobile Devices */
+@media screen and (max-width: 320px) {
+  .navbar {
+    padding: 0.6rem 3vw;
+  }
+
+  .navbar-logo {
+    font-size: 1rem;
+  }
+
+  .navbar-hamburger {
+    width: 32px;
+    height: 32px;
+  }
+
+  .navbar-hamburger span {
+    width: 20px;
   }
 }
 
+/* Landscape Mobile Orientation */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .navbar-links {
+    padding-top: 3rem;
+  }
+  
+  .navbar-links a {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Accessibility & Animation Preferences */
+@media (prefers-reduced-motion: reduce) {
+  .navbar-hamburger span,
+  .navbar-links,
+  .navbar-overlay {
+    transition: none;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .navbar {
+    border-bottom: 2px solid var(--primary);
+  }
+  
+  .navbar-links a {
+    border: 1px solid transparent;
+  }
+  
+  .navbar-links a:hover,
+  .navbar-links a.active {
+    border-color: var(--accent);
+  }
+}
+
+/* Focus States for Keyboard Navigation */
+.navbar-hamburger:focus,
 .navbar-links a:focus {
-  outline: 2px solid var(--active-color);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
-.navbar-hamburger:focus {
-  outline: 2px solid var(--active-color);
-  outline-offset: 2px;
+/* Dark mode support (if you have dark mode variables) */
+@media (prefers-color-scheme: dark) {
+  .navbar-overlay {
+    background: rgba(0, 0, 0, 0.7);
+  }
 }
