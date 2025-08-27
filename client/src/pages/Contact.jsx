@@ -4,34 +4,197 @@ import './Contact.css';
 
 export default function Contact() {
   const handlePhoneClick = (phone) => {
-    window.open(`tel:${phone}`, '_blank');
+    if (phone) {
+      window.open(`tel:${phone}`, '_blank');
+    }
   };
 
-  const contacts = [
+  const boardMembers = [
     {
-      position: "President",
-      name: "Dr. SEN",
-      phone: "7977898078"
+      slNo: 1,
+      name: "DR. DEEPAK SEN",
+      designation: "President",
+      mobile: "9445297340"
     },
     {
-      position: "Vice President",
-      name: "Sarah Johnson",
-      phone: "+91 98765 43210"
+      slNo: 2,
+      name: "SHRI BUDDHADEB DAS",
+      designation: "Vice-President",
+      mobile: "9434027817"
     },
     {
-      position: "Secretary",
-      name: "Mike Davis",
-      phone: "+91 98765 43211"
+      slNo: 3,
+      name: "SHRI ACHINTYA KUMAR HAZRA",
+      designation: "Manager",
+      mobile: "7022368891"
     },
     {
-      position: "Treasurer",
-      name: "Emily Chen",
-      phone: "+91 98765 43212"
+      slNo: 4,
+      name: "SHRI TUHIN KUMAR PAL",
+      designation: "Secretary",
+      mobile: "9830453563"
     },
     {
-      position: "Events Coordinator",
-      name: "Alex Rodriguez",
-      phone: "+91 98765 43213"
+      slNo: 5,
+      name: "SHRI SOUMOK BASU",
+      designation: "Manager",
+      mobile: "8777846760"
+    },
+    {
+      slNo: 6,
+      name: "DR. NARAYAN MOITRA",
+      designation: "Treasurer",
+      mobile: "9431509908"
+    },
+    {
+      slNo: 7,
+      name: "SHRI SAMIR KUMAR MAJI",
+      designation: "Asst. Treasurer",
+      mobile: "9433912082"
+    },
+    {
+      slNo: 8,
+      name: "MRS. SEEMA SAHA",
+      designation: "Asst. Treasurer",
+      mobile: "9432669431"
+    },
+    {
+      slNo: 9,
+      name: "SHRI GOUTAM MUKHERJEE",
+      designation: "Manager",
+      mobile: "9830023972"
+    },
+    {
+      slNo: 10,
+      name: "SHRI BIVAS MANDAL",
+      designation: "Manager",
+      mobile: "9969573382"
+    },
+    {
+      slNo: 11,
+      name: "SHRI DEBABRATA CHANDA",
+      designation: "Manager",
+      mobile: "9413354512"
+    },
+    {
+      slNo: 12,
+      name: "SHRI SHYAMAL NASKAR",
+      designation: "Manager",
+      mobile: "9432011943"
+    },
+    {
+      slNo: 13,
+      name: "SHRI MADHUSUDAN MAJUMDAR",
+      designation: "Manager",
+      mobile: "9869650162"
+    },
+    {
+      slNo: 14,
+      name: "SHRI CHANDAN BOSE",
+      designation: "Manager",
+      mobile: "8552000201"
+    },
+    {
+      slNo: 15,
+      name: "SHRI JAYANTA KUMAR DAS",
+      designation: "Manager",
+      mobile: "9423490071"
+    },
+    {
+      slNo: 16,
+      name: "SHRI SANDIP MITRA",
+      designation: "Manager",
+      mobile: "9821659961"
+    },
+    {
+      slNo: 17,
+      name: "SHRI SANJEEV CHOWDHURY",
+      designation: "Manager",
+      mobile: "9850077050"
+    },
+    {
+      slNo: 18,
+      name: "SHRI DEEPAK TUSHAR BANERJEE",
+      designation: "Manager",
+      mobile: "9999057502"
+    },
+    {
+      slNo: 19,
+      name: "SHRI ASIT KUMAR DE",
+      designation: "Manager",
+      mobile: "8007991574"
+    },
+    {
+      slNo: 20,
+      name: "SHRI BAPPA BHATTACHARYA",
+      designation: "Manager",
+      mobile: "7042802662"
+    },
+    {
+      slNo: 21,
+      name: "SHRI PRANAB KUMAR MISHRA",
+      designation: "Manager",
+      mobile: "9531620635"
+    },
+    {
+      slNo: 22,
+      name: "SHRI DIPAK KUMAR SENGUPTA",
+      designation: "Manager",
+      mobile: "8240562198"
+    },
+    {
+      slNo: 23,
+      name: "SHRI NITIN NISHANT",
+      designation: "Manager",
+      mobile: "9748721320"
+    },
+    {
+      slNo: 24,
+      name: "SHRI SHAILESH KUMAR MALLICK",
+      designation: "Manager",
+      mobile: "8240272844"
+    },
+    {
+      slNo: 25,
+      name: "SHRI SUBRATA BHOWMICK",
+      designation: "Manager",
+      mobile: "9477093257"
+    },
+    {
+      slNo: 26,
+      name: "SHRI NARAYAN CHANDRA GHOSH",
+      designation: "Manager",
+      mobile: "9997711959"
+    },
+    {
+      slNo: 27,
+      name: "SHRI ANIL KUMAR RAI",
+      designation: "Manager",
+      mobile: ""
+    },
+    {
+      slNo: 28,
+      name: "SHRI SAUBHIK PAN",
+      designation: "Manager",
+      mobile: "8910085793"
+    },
+    {
+      slNo: 29,
+      name: "SHRI BISWANATH NAYAK",
+      designation: "Manager",
+      mobile: "9007004187"
+    },
+    {
+      slNo: 30,
+      name: "DR. MD. HAROON RASHID",
+      designation: "Manager",
+      mobile: "9433530994"
+    },
+    {
+      slNo: 31,
+      name: "SHRI AHI BHUSHAN CHAKRAVIRTY",
+      designation: "Manager",
+      mobile: "9897242007"
     }
   ];
 
@@ -39,37 +202,44 @@ export default function Contact() {
     <div className="contact-container">
       <div className="contact-header">
         <h1>Contact Us</h1>
-        <p>Get in touch with our society leadership team</p>
+        <p>Get in touch with our Board of Managers</p>
       </div>
 
       <div className="general-contact">
         <h2>General Information</h2>
         <div className="general-info">
           <p><strong>Society Email:</strong> kv2k.bom2@gmail.com</p>
-          <p><strong>Main Office:</strong> +91 98765 43200</p>
-          <p><strong>Address:</strong> 123 Society Street, City, State 12345</p>
+          <p><strong>Address:</strong> Kendriya Vihar Phase - 2, Kolkata</p>
         </div>
       </div>
 
       <div className="contacts-grid">
-        <h2>Leadership Team</h2>
+        <h2>Board of Managers</h2>
         <div className="contacts-list">
-          {contacts.map((contact, index) => (
+          {boardMembers.map((member, index) => (
             <div key={index} className="contact-card">
               <div className="contact-info">
-                <h3>{contact.position}</h3>
-                <h4>{contact.name}</h4>
-                <p className="contact-detail">
-                  <span className="contact-icon">📞</span>
-                  {contact.phone}
-                </p>
+                <div className="contact-header-info">
+                  <span className="designation-badge">{member.designation}</span>
+                </div>
+                <h3>{member.name}</h3>
+                {member.mobile && (
+                  <p className="contact-detail">
+                    <span className="contact-icon">📞</span>
+                    {member.mobile}
+                  </p>
+                )}
               </div>
               <div className="contact-actions">
-                <Button 
-                  text="Call" 
-                  onClick={() => handlePhoneClick(contact.phone)}
-                  variant="primary"
-                />
+                {member.mobile ? (
+                  <Button
+                    text="Call"
+                    onClick={() => handlePhoneClick(member.mobile)}
+                    variant="primary"
+                  />
+                ) : (
+                  <span className="no-contact">No mobile listed</span>
+                )}
               </div>
             </div>
           ))}

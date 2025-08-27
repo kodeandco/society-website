@@ -1,4 +1,25 @@
 function Map() {
+  const handleGetDirections = () => {
+    const coordinates = "22.639170,88.435368";
+    const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${coordinates}&travelmode=driving`;
+    window.open(directionsUrl, '_blank');
+  };
+
+  const buttonStyle = {
+    background: '#4285f4',
+    color: 'white',
+    border: 'none',
+    padding: '12px 24px',
+    borderRadius: '6px',
+    fontSize: '16px',
+    fontWeight: '500',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    width: '100%',
+    maxWidth: '200px',
+    marginTop: '10px'
+  };
+
   return (
     <section className="card location-map">
       <h2>Location</h2>
@@ -12,8 +33,16 @@ function Map() {
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
           title="KV2K Location Map"
-        ></iframe>
+        />
       </div>
+      <button 
+        onClick={handleGetDirections} 
+        style={buttonStyle}
+        onMouseOver={(e) => e.target.style.background = '#3367d6'}
+        onMouseOut={(e) => e.target.style.background = '#4285f4'}
+      >
+        Get Directions
+      </button>
     </section>
   );
 }
