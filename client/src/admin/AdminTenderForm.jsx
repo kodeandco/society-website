@@ -24,7 +24,7 @@ function AdminTenderForm() {
   const fetchTenders = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('http://localhost:5000/tenders');
+      const response = await fetch('https://society-website-cpd3.onrender.com/tenders');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -87,13 +87,13 @@ function AdminTenderForm() {
       let response;
       if (editingTenderId) {
         // Edit existing tender via PATCH request
-        response = await fetch(`http://localhost:5000/tenders/${editingTenderId}`, {
+        response = await fetch(`https://society-website-cpd3.onrender.com/tenders/${editingTenderId}`, {
           method: 'PATCH',
           body: tenderData,
         });
       } else {
         // Create new tender via POST request
-        response = await fetch('http://localhost:5000/tenders', {
+        response = await fetch('https://society-website-cpd3.onrender.com/tenders', {
           method: 'POST',
           body: tenderData,
         });
@@ -141,7 +141,7 @@ function AdminTenderForm() {
     setShowConfirmModal(false);
     try {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:5000/tenders/${tenderToDelete}`, {
+      const response = await fetch(`https://society-website-cpd3.onrender.com/tenders/${tenderToDelete}`, {
         method: 'DELETE',
       });
 
