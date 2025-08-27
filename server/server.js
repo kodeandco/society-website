@@ -31,8 +31,8 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // API Routes
 app.use('/login', loginRoute);
 app.use('/signup', signupRoute);
-app.use('/tenders', tenderRoute);
 app.use('/tenders/download', downloadRoute);
+app.use('/tenders', tenderRoute);
 app.use('/photogallery', galleryRoute);
 
 app.get('/', (req, res) => {
