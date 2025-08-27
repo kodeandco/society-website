@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './TenderCard.css';
 import Button from '../components/Button';
 
 function TenderCard({ tender, index }) {
+  const [downloading, setDownloading] = useState(false);
+  const [error, setError] = useState('');
+
+  // Detect if user is on mobile
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  // Primary download method (works best on desktop and modern mobile browsers)
   const handleDownload = async () => {
     try {
-      // Show loading state by getting the button element
-      const downloadButton = document.querySelector(`[data-tender-id="${tender.id}"] button`);
-      if (downloadButton) {
-        downloadButton.disabled = true;
-        downloadButton.textContent = 'Downloading...';
-      }
+      setDownloading(true);
+      setError('');
 
-      // Make request to download endpoint
       const response = await fetch(`https://society-website-cpd3.onrender.com/tenders/download/${tender.id}`);
       
       if (!response.ok) {
@@ -40,24 +42,55 @@ function TenderCard({ tender, index }) {
       a.href = url;
       a.download = filename;
       
+      // For mobile browsers, add additional attributes
+      if (isMobile) {
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+      }
+      
       // Append to body, click, and remove
       document.body.appendChild(a);
       a.click();
       
-      // Cleanup
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-      
+      // Cleanup with slight delay for mobile browsers
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }, 100);
+
     } catch (error) {
       console.error('Download error:', error);
-      alert(`Failed to download file: ${error.message}`);
-    } finally {
-      // Reset button state
-      const downloadButton = document.querySelector(`[data-tender-id="${tender.id}"] button`);
-      if (downloadButton) {
-        downloadButton.disabled = false;
-        downloadButton.textContent = 'Download Document';
+      setError(`Failed to download: ${error.message}`);
+      
+      // Fallback: try direct download method for mobile
+      if (isMobile) {
+        handleDirectDownload();
       }
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  // Fallback method 1: Direct download (good for mobile)
+  const handleDirectDownload = () => {
+    const url = `https://society-website-cpd3.onrender.com/tenders/download/${tender.id}`;
+    window.location.href = url;
+  };
+
+  // Fallback method 2: View in browser (best for mobile document viewing)
+  const handleViewInBrowser = () => {
+    const url = `https://society-website-cpd3.onrender.com/tenders/view/${tender.id}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  // Smart download that chooses best method based on device
+  const handleSmartDownload = () => {
+    if (isMobile) {
+      // For mobile, try the blob method first, with fallbacks
+      handleDownload();
+    } else {
+      // For desktop, use the original blob method
+      handleDownload();
     }
   };
 
@@ -79,13 +112,66 @@ function TenderCard({ tender, index }) {
         </div>
       </div>
       
+      {error && (
+        <div className="error-message" style={{ 
+          color: 'red', 
+          fontSize: '0.9rem', 
+          marginBottom: '10px',
+          textAlign: 'center' 
+        }}>
+          {error}
+        </div>
+      )}
+      
       <div className="tender-action">
+        {/* Primary download button */}
         <Button 
-          text="Download Document"
-          onClick={handleDownload}
+          text={downloading ? "Downloading..." : "Download Document"}
+          onClick={handleSmartDownload}
           variant="primary"
+          disabled={downloading}
         />
-    
+        
+        {/* Mobile-specific additional options */}
+        {isMobile && (
+          <div className="mobile-options" style={{ 
+            marginTop: '8px', 
+            display: 'flex', 
+            gap: '8px',
+            justifyContent: 'center'
+          }}>
+            <button 
+              onClick={handleViewInBrowser}
+              style={{
+                padding: '6px 12px',
+                fontSize: '0.8rem',
+                border: '1px solid #ccc',
+                backgroundColor: 'transparent',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                color: '#666'
+              }}
+              disabled={downloading}
+            >
+              View in Browser
+            </button>
+            <button 
+              onClick={handleDirectDownload}
+              style={{
+                padding: '6px 12px',
+                fontSize: '0.8rem',
+                border: '1px solid #ccc',
+                backgroundColor: 'transparent',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                color: '#666'
+              }}
+              disabled={downloading}
+            >
+              Direct Download
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
