@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './GalleryCard.css';
 
-function GalleryCard({ image, index }) {
+function GalleryCard({ image }) {
   const [showLightbox, setShowLightbox] = useState(false);
 
   const handleImageClick = (e) => {
@@ -16,22 +16,19 @@ function GalleryCard({ image, index }) {
   return (
     <>
       <div className="gallery-card-item">
-        <div className="gallery-header">
-          <span className="gallery-number">#{index + 1}</span>
-          <h3 className="gallery-title">{image.title}</h3>
-        </div>
-        
-        <div className="gallery-image-container">
+        {/* Image */}
+        <div className="gallery-image-container" onClick={handleImageClick}>
           <img 
             src={image.image}
             className="gallery-image"
             loading="lazy"
             alt={image.title}
-            onClick={handleImageClick}
           />
         </div>
         
+        {/* Info below image */}
         <div className="gallery-info">
+          <h3 className="gallery-title">{image.title}</h3>
           <div className="image-details">
             <span className="detail-label">Category:</span>
             <span className="detail-value">{image.category || 'General'}</span>
@@ -42,7 +39,10 @@ function GalleryCard({ image, index }) {
       {/* Lightbox for big image */}
       {showLightbox && (
         <div className="lightbox" onClick={closeLightbox}>
-          <div className="lightbox-content">
+          <div 
+            className="lightbox-content" 
+            onClick={(e) => e.stopPropagation()} // stops closing when clicking inside
+          >
             <button className="close-btn" onClick={closeLightbox}>×</button>
             <img 
               src={image.image} 
