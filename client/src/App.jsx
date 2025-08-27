@@ -72,19 +72,22 @@ function App() {
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/admin-login" element={<AdminLogin />} />
-            <Route path="admin/dashboard" element={<DashboardHome />} />
-            <Route path="admin/tenders" element={<AdminTenderForm />} />
-            <Route path="admin/gallery" element={<AdminGalleryForm title="Gallery Management" />} />
-            <Route path="admin/login" element={<AdminLogin />} />
-            <Route path="admin/settings" element={<Placeholder title="Settings" />} />
-            <Route path="admin/reports" element={<Placeholder title="Gallery/Reports" />} />
                 </Routes>
                 <Footer />
               </>
             }
           />
           
-          
+          {/* Admin Routes */}
+          <Route path="/admin/*" element={<AdminDashboard />}>
+            <Route index element={<DashboardHome />} />
+            <Route path="dashboard" element={<DashboardHome />} />
+            <Route path="tenders" element={<AdminTenderForm />} />
+            <Route path="gallery" element={<AdminGalleryForm title="Gallery Management" />} />
+            <Route path="login" element={<AdminLogin />} />
+            <Route path="settings" element={<Placeholder title="Settings" />} />
+            <Route path="reports" element={<Placeholder title="Gallery/Reports" />} />
+          </Route>
         </Routes>
       </div>
     </Router>
