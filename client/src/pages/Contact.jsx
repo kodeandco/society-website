@@ -208,7 +208,7 @@ export default function Contact() {
       <div className="general-contact">
         <h2>General Information</h2>
         <div className="general-info">
-          <p><strong>Society Email:</strong> kv2k.bom2@gmail.com</p>
+          <p><strong>Society Email:</strong> office.kv2k@gmail.com</p>
           <p><strong>Address:</strong> Kendriya Vihar Phase - 2, Kolkata</p>
         </div>
       </div>
