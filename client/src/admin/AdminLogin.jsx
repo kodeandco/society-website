@@ -6,10 +6,39 @@ const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Hardcoded admin credentials
+  const ADMIN_CREDENTIALS = {
+    email: "admin@society.com",
+    password: "admin123"
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      // Check hardcoded credentials first
+      if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
+        // Create mock admin data
+        const adminData = {
+          token: "mock-admin-token-" + Date.now(),
+          user: {
+            id: 1,
+            email: email,
+            name: "Admin User",
+            role: "admin"
+          }
+        };
+
+        // Store in localStorage
+        localStorage.setItem('adminToken', adminData.token);
+        localStorage.setItem('adminUser', JSON.stringify(adminData.user));
+        
+        alert("Login successful!");
+        window.location.href = "/admin/dashboard";
+        return;
+      }
+
+      // If hardcoded credentials don't match, try API call
       const response = await fetch("https://society-website-cpd3.onrender.com/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -31,7 +60,7 @@ const AdminLogin = () => {
       }
     } catch (error) {
       console.error("Login error:", error);
-      alert("Login failed. Please try again.");
+      alert("Invalid credentials. Please try again.");
     }
   };
 
@@ -39,6 +68,18 @@ const AdminLogin = () => {
     <div className="login-container">
       <div className="login-box">
         <h2>Admin Login</h2>
+        
+        {/* Display hardcoded credentials for testing */}
+        <div style={{ 
+          backgroundColor: '#f0f0f0', 
+          padding: '10px', 
+          marginBottom: '20px', 
+          borderRadius: '5px',
+          fontSize: '12px',
+          color: '#666'
+        }}>
+         
+        </div>
         
         <form onSubmit={handleSubmit}>
           <div className="input-group">
@@ -63,9 +104,9 @@ const AdminLogin = () => {
             />
           </div>
 
-          <Button 
-            text="Login" 
-            type="submit" 
+          <Button
+            text="Login"
+            type="submit"
             variant="primary"
           />
         </form>
