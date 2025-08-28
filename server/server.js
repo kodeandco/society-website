@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 
 // Configure CORS to allow requests from http://localhost:5173
 const corsOptions = {
-    origin: ['http://localhost:5173', 'https://kolkv2.vercel.app', 'https://www.kolkv2.org'], // Only allow these origins
+    origin: ['http://localhost:5173', 'https://kolkv2.vercel.app', 'https://kolkv2.org'], // Only allow these origins
     methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'], // Specify the allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Specify the allowed headers
 };
