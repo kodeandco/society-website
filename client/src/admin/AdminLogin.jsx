@@ -3,13 +3,13 @@ import "./Login.css";
 import Button from "./Button";
 
 const AdminLogin = () => {
-  const [email, setEmail] = useState("");
+  const [userid, setuserid] = useState("");
   const [password, setPassword] = useState("");
 
   // Hardcoded admin credentials
   const ADMIN_CREDENTIALS = {
-    email: "admin@society.com",
-    password: "admin123"
+    userid: "admin@kv2kolk",
+    password: "kv2kolkadmin"
   };
 
   const handleSubmit = async (e) => {
@@ -17,13 +17,13 @@ const AdminLogin = () => {
 
     try {
       // Check hardcoded credentials first
-      if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
+      if (userid === ADMIN_CREDENTIALS.userid && password === ADMIN_CREDENTIALS.password) {
         // Create mock admin data
         const adminData = {
           token: "mock-admin-token-" + Date.now(),
           user: {
             id: 1,
-            email: email,
+            userid: userid,
             name: "Admin User",
             role: "admin"
           }
@@ -42,7 +42,7 @@ const AdminLogin = () => {
       const response = await fetch("https://society-website-cpd3.onrender.com/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ userid, password }),
       });
 
       if (!response.ok) throw new Error("Failed to log in");
@@ -83,12 +83,12 @@ const AdminLogin = () => {
         
         <form onSubmit={handleSubmit}>
           <div className="input-group">
-            <label>Email</label>
+            <label>UserID</label>
             <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              placeholder="Enter your userid"
+              value={userid}
+              onChange={(e) => setuserid(e.target.value)}
               required
             />
           </div>
