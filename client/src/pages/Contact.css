@@ -1,198 +1,321 @@
-.contact-container {
+/* Contact.css */
+
+.contact-page {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: #2d3748;
+}
+
+/* Header Styles */
+.header {
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+  color: white;
+  padding: 4rem 1.5rem;
+  text-align: center;
+}
+
+.header-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 20px;
-  font-family: 'Arial', sans-serif;
-  color: #333;
 }
 
-.contact-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.contact-header h1 {
-  font-size: 2.5rem;
-  color: #2c3e50;
-  margin-bottom: 10px;
+.header-title {
+  font-size: 3rem;
   font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
 }
 
-.contact-header p {
-  font-size: 1.1rem;
-  color: #7f8c8d;
+.header-subtitle {
+  font-size: 1.125rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Main Container */
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #1a202c;
+}
+
+/* Committee Cards */
+.committees-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.committee-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.committee-card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Committee Header */
+.committee-header {
+  width: 100%;
+  background: #f7fafc;
+  border: none;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.committee-header:hover {
+  background: #edf2f7;
+}
+
+.committee-header:focus {
+  outline: 2px solid #4299e1;
+  outline-offset: -2px;
+}
+
+.committee-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.committee-info {
+  flex: 1;
+}
+
+.committee-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #2d3748;
+}
+
+.committee-chairman {
+  color: #4a5568;
+  font-size: 0.95rem;
   margin: 0;
 }
 
-.general-contact {
-  background: #f8f9fa;
-  padding: 30px;
-  border-radius: 12px;
-  margin-bottom: 40px;
-  border: 1px solid #e9ecef;
-}
-
-.general-contact h2 {
-  color: #2c3e50;
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-}
-
-.general-info p {
-  font-size: 1.1rem;
-  margin: 8px 0;
-  color: #495057;
-}
-
-.general-info strong {
-  color: #2c3e50;
-  font-weight: 600;
-}
-
-.contacts-grid h2 {
-  text-align: center;
-  color: #2c3e50;
-  margin-bottom: 30px;
-  font-size: 1.8rem;
-}
-
-.contacts-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 25px;
-  margin-bottom: 40px;
-}
-
-.contact-card {
-  background: white;
-  border-radius: 12px;
-  padding: 25px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e9ecef;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.contact-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-}
-
-.contact-info h3 {
-  color: #3498db;
-  margin: 0 0 8px 0;
-  font-size: 1.3rem;
-  font-weight: 600;
-}
-
-.contact-info h4 {
-  color: #2c3e50;
-  margin: 0 0 15px 0;
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-
-.contact-detail {
+/* Toggle Icon */
+.toggle-icon {
+  width: 32px;
+  height: 32px;
+  background: #4a5568;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  margin: 8px 0;
-  font-size: 0.95rem;
-  color: #495057;
-}
-
-.contact-icon {
-  margin-right: 8px;
-  font-size: 1rem;
-}
-
-.contact-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-  flex-wrap: wrap;
-}
-
-.contact-actions .btn_container {
-  flex: 1;
-  min-width: 100px;
-}
-
-.contact-footer {
-  background: #2c3e50;
+  justify-content: center;
   color: white;
-  padding: 30px;
-  border-radius: 12px;
-  text-align: center;
-}
-
-.contact-footer h3 {
-  margin: 0 0 15px 0;
-  font-size: 1.5rem;
-  color: #ecf0f1;
-}
-
-.contact-footer p {
-  margin: 5px 0;
   font-size: 1rem;
-  color: #bdc3c7;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
-/* Button styles to work with your existing Button component */
-.btn_container {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.9rem;
+.toggle-icon.open {
+  background: #2d3748;
+  transform: rotate(180deg);
+}
+
+/* Committee Content */
+.committee-content {
+  padding: 1.5rem;
+  background: #fdfdfd;
+}
+
+/* Chairman Section */
+.chairman-section {
+  margin-bottom: 2rem;
+}
+
+.section-heading {
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.chairman-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #4299e1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   font-weight: 500;
-  cursor: pointer;
+}
+
+/* Members Section */
+.members-section {
+  margin-top: 2rem;
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.member-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
   transition: all 0.2s ease;
-  text-decoration: none;
-  display: inline-block;
+}
+
+.member-card:hover {
+  border-color: #cbd5e0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.member-meta {
+  font-size: 0.875rem;
+  color: #718096;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.member-name {
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.member-role {
+  font-size: 0.875rem;
+  color: #4299e1;
+  font-weight: 500;
+}
+
+/* Footer */
+.footer {
   text-align: center;
+  margin-top: 3rem;
+  padding: 2rem;
+  background: #edf2f7;
+  border-radius: 12px;
 }
 
-.btn_container.primary {
-  background-color: #3498db;
-  color: white;
+.footer p {
+  color: #4a5568;
+  font-size: 0.95rem;
+  margin: 0;
 }
 
-.btn_container.primary:hover {
-  background-color: #2980b9;
-  transform: translateY(-1px);
-}
-
-.btn_container.secondary {
-  background-color: #95a5a6;
-  color: white;
-}
-
-.btn_container.secondary:hover {
-  background-color: #7f8c8d;
-  transform: translateY(-1px);
-}
-
-/* Responsive design */
+/* Responsive Design */
 @media (max-width: 768px) {
-  .contact-container {
-    padding: 20px 15px;
-  }
-  
-  .contact-header h1 {
+  .header-title {
     font-size: 2rem;
   }
   
-  .contacts-list {
+  .header-subtitle {
+    font-size: 1rem;
+  }
+
+  .main-container {
+    padding: 2rem 1rem;
+  }
+
+  .committee-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .toggle-icon {
+    align-self: flex-end;
+    margin-top: -2rem;
+  }
+
+  .members-grid {
     grid-template-columns: 1fr;
   }
-  
-  .general-contact {
-    padding: 20px;
+
+  .committee-content {
+    padding: 1rem;
   }
-  
-  .contact-actions {
-    flex-direction: column;
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 2.5rem 1rem;
   }
-  
-  .contact-actions .btn_container {
-    width: 100%;
+
+  .header-title {
+    font-size: 1.75rem;
+  }
+
+  .main-container {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .committee-header {
+    padding: 1rem;
+  }
+
+  .committee-title {
+    font-size: 1.125rem;
+  }
+
+  .committee-chairman {
+    font-size: 0.875rem;
+  }
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+  .committee-card,
+  .member-card,
+  .toggle-icon,
+  .committee-header {
+    transition: none;
+  }
+}
+
+/* Focus States */
+.committee-header:focus-visible {
+  outline: 2px solid #4299e1;
+  outline-offset: -2px;
+}
+
+/* Print Styles */
+@media print {
+  .header {
+    background: #2d3748 !important;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .committee-card {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+
+  .toggle-icon {
+    display: none;
+  }
+
+  .committee-content {
+    display: block !important;
   }
 }
