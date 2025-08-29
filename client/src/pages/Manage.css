@@ -1,0 +1,74 @@
+.management-page {
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.committee-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  background: #fff;
+  overflow: hidden;
+}
+
+.committee-header {
+  width: 100%;
+  text-align: left;
+  background: #f2f2f2;
+  border: none;
+  padding: 1rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.committee-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.committee-title {
+  font-weight: bold;
+}
+
+.toggle-icon {
+  font-size: 1.5rem;
+  transition: transform 0.3s;
+}
+.toggle-icon.open {
+  transform: rotate(180deg);
+}
+
+.committee-content {
+  padding: 1rem;
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+  gap: 1rem;
+}
+
+.member-card {
+  padding: 0.8rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafafa;
+}
+.member-sl {
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+.member-name {
+  font-size: 1rem;
+}
+.member-role {
+  font-size: 0.9rem;
+  color: #555;
+}

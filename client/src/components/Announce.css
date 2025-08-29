@@ -1,0 +1,93 @@
+/* Additional styles for the Announce card component */
+
+.announcements ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.announcement-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.announcement-item:last-child {
+  border-bottom: none;
+}
+
+.announcement-icon {
+  font-size: 1.2rem;
+  margin-top: 2px;
+}
+
+.announcement-content {
+  flex: 1;
+  min-width: 0; /* Allows text to wrap properly */
+}
+
+.announcement-content strong {
+  display: block;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 1rem;
+}
+
+.announcement-date {
+  font-size: 0.8rem;
+  color: #666;
+  font-weight: normal;
+  margin-left: 8px;
+  background: #f8f9fa;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.announcement-text {
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+.view-all-announcements {
+  margin-top: 15px;
+  text-align: center;
+  padding-top: 15px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.view-all-link {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.view-all-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .announcement-item {
+    gap: 8px;
+  }
+  
+  .announcement-content strong {
+    font-size: 0.95rem;
+  }
+  
+  .announcement-text {
+    font-size: 0.85rem;
+  }
+  
+  .announcement-date {
+    font-size: 0.75rem;
+  }
+}

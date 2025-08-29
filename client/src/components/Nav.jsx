@@ -4,6 +4,7 @@ import './Nav.css'
 
 const NAV_LINKS = [
   { name: 'Home', to: '/' },
+  { name: 'Manage', to: '/Manage' },
   { name: 'About', to: '/about' },
   { name: 'Amenities', to: '/amenities' },
   { name: 'Gallery', to: '/gallery' },

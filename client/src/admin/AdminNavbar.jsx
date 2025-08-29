@@ -7,13 +7,9 @@ function AdminNavbar() {
 
   const handleLogout = () => {
     const confirmLogout = window.confirm("Are you sure you want to logout?");
-    
     if (confirmLogout) {
-      console.log("Logging out...");
-      // Clear admin tokens
       localStorage.removeItem('adminToken');
       localStorage.removeItem('adminUser');
-      // Navigate to admin login page
       navigate("/admin-login");
     }
   };
@@ -27,8 +23,7 @@ function AdminNavbar() {
         <li onClick={() => navigate("/admin/tenders")}>Tenders</li>
         <li onClick={() => navigate("/admin/gallery")}>Gallery</li>
         <li onClick={() => navigate("/admin/users")}>Users</li>
-        <li onClick={() => navigate("/admin/settings")}>Settings</li>
-        
+        <li onClick={() => navigate("/admin/adminannounce")}>Announcements</li>
       </ul>
 
       <button className="logout-btn" onClick={handleLogout}>
