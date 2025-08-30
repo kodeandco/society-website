@@ -21,6 +21,9 @@ function AdminGalleryForm() {
 
   // Predefined categories for the dropdown
   const categories = [
+    "Ganesh Puja",
+    "Independence day",
+    "Garden Photos",
     "Architecture",
     "Landscape",
     "Interior",
