@@ -15,10 +15,10 @@ export default function AdminAnnounce() {
     announcement: "",
     priority: "normal",
     category: "general",
-    author: "Admin",
+   
     targetAudience: "all",
     expiresAt: "",
-    tags: [],
+   
   });
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
@@ -92,8 +92,7 @@ export default function AdminAnnounce() {
     const { name, value } = e.target;
     if (name === 'tags') {
       // Handle comma-separated tags
-      const tagsArray = value.split(',').map(tag => tag.trim()).filter(tag => tag);
-      setFormData({ ...formData, [name]: tagsArray });
+     null;
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -118,10 +117,10 @@ export default function AdminAnnounce() {
         announcement: formData.announcement.trim(),
         priority: formData.priority,
         category: formData.category,
-        author: formData.author.trim(),
+       
         targetAudience: formData.targetAudience,
         expiresAt: formData.expiresAt || null,
-        tags: Array.isArray(formData.tags) ? formData.tags : [],
+        
       };
 
       console.log('Sending payload:', payload); // Debug log
@@ -150,10 +149,10 @@ export default function AdminAnnounce() {
           announcement: "",
           priority: "normal",
           category: "general",
-          author: "Admin",
+         
           targetAudience: "all",
           expiresAt: "",
-          tags: [],
+          
         });
       } else {
         setError(result.message || 'Failed to create announcement');
@@ -171,10 +170,10 @@ export default function AdminAnnounce() {
       announcement: announcement.announcement || "",
       priority: announcement.priority || "normal",
       category: announcement.category || "general",
-      author: announcement.author || "Admin",
+   
       targetAudience: announcement.targetAudience || "all",
       expiresAt: announcement.expiresAt ? announcement.expiresAt.split('T')[0] : "",
-      tags: announcement.tags || [],
+      
     });
     setIsEditing(true);
     setEditId(announcement._id);
@@ -199,10 +198,10 @@ export default function AdminAnnounce() {
         announcement: formData.announcement.trim(),
         priority: formData.priority,
         category: formData.category,
-        author: formData.author.trim(),
+      
         targetAudience: formData.targetAudience,
         expiresAt: formData.expiresAt || null,
-        tags: Array.isArray(formData.tags) ? formData.tags : [],
+        
       };
 
       const response = await fetch(`${API_BASE_URL}/announcements/${editId}`, {
@@ -318,10 +317,10 @@ export default function AdminAnnounce() {
       announcement: "",
       priority: "normal",
       category: "general",
-      author: "Admin",
+    
       targetAudience: "all",
       expiresAt: "",
-      tags: [],
+      
     });
     setIsEditing(false);
     setEditId(null);
@@ -438,18 +437,7 @@ export default function AdminAnnounce() {
         </div>
 
         <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="author">Author:</label>
-            <input
-              type="text"
-              id="author"
-              name="author"
-              value={formData.author}
-              onChange={handleChange}
-              placeholder="Enter author name"
-              className="form-input"
-            />
-          </div>
+       
           
           <div className="form-group">
             <label htmlFor="targetAudience">Target Audience:</label>
@@ -501,18 +489,8 @@ export default function AdminAnnounce() {
             />
           </div>
           
-          <div className="form-group">
-            <label htmlFor="tags">Tags (comma-separated):</label>
-            <input
-              type="text"
-              id="tags"
-              name="tags"
-              value={Array.isArray(formData.tags) ? formData.tags.join(', ') : ''}
-              onChange={handleChange}
-              placeholder="feature, update, important"
-              className="form-input"
-            />
-          </div>
+          
+      
         </div>
 
         <div className="form-actions">
@@ -583,20 +561,13 @@ export default function AdminAnnounce() {
                     {announcement.announcement}
                   </div>
                   
-                  {announcement.tags && announcement.tags.length > 0 && (
-                    <div className="tags-container">
-                      {announcement.tags.map((tag, index) => (
-                        <span key={index} className="tag">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+             
                 </div>
                 
                 <div className="announcement-meta">
                   <div className="meta-row">
-                    <span><strong>Author:</strong> {announcement.author}</span>
+                   
+                   
                     <span><strong>Category:</strong> {announcement.category}</span>
                   </div>
                   <div className="meta-row">

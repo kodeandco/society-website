@@ -165,13 +165,13 @@ function Announce() {
         </ul>
       )}
              
-      {announcements.length > 0 && (
+      {/* {announcements.length > 0 && (
         <div className="view-all-announcements">
           <a href="/announcements" className="view-all-link">
             View All Announcements →
           </a>
         </div>
-      )}
+      )} */}
     </section>
   );
 }
