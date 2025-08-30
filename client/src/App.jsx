@@ -5,20 +5,21 @@ import Nav from './components/Nav';
 import Hero from './components/Hero';
 import Announce from './components/Announce';
 import Infra from './components/Infra';
-import Gallery from './components/GalleryComponent';
 import GalleryPage from './pages/Gallery.jsx';
 import Map from './components/Map';
 import Footer from './components/Footer';
 import About from './pages/About';
 import Tenders from './pages/Tenders';
 import Login from './pages/Login';
-import AdminLogin from './admin/AdminLogin.jsx'; // Add this import
-import AdminDashboard from './admin/AdminDashboard';
-import AdminTenderForm from './admin/AdminTenderForm';
-import DashboardHome from './admin/DashboardHome';
+import Manage from './pages/Manage.jsx';
+import AdminLogin from './admin/AdminLogin.jsx';
+import AdminDashboard from './admin/AdminDashboard.jsx';
+import AdminTenderForm from './admin/AdminTenderForm.jsx';
+import DashboardHome from './admin/DashboardHome.jsx';
 import Signup from './pages/Signup';
 import AdminGalleryForm from './admin/AdminGalleryForm.jsx';
-import Contact from './pages/Contact'; // Add this import
+import Contact from './pages/Contact';
+import AdminAnnounce from './admin/AdminAnnounce.jsx';
 
 function Home() {
   return (
@@ -58,26 +59,24 @@ function App() {
       <div className="main-bg">
         <Routes>
           {/* Public Routes */}
-          <Route
-            path="/*"
-            element={
-              <>
-                <Nav />
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/tenders" element={<Tenders />} />
-                  <Route path="/amenities" element={<Placeholder title="Amenities" />} />
-                  <Route path="/gallery" element={<GalleryPage title="Gallery" />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/admin-login" element={<AdminLogin />} />
-                </Routes>
-                <Footer />
-              </>
-            }
-          />
-          
+          <Route path="/*" element={
+            <>
+              <Nav />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/manage" element={<Manage />} />
+                <Route path="/tenders" element={<Tenders />} />
+                <Route path="/amenities" element={<Placeholder title="Amenities" />} />
+                <Route path="/gallery" element={<GalleryPage title="Gallery" />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/admin-login" element={<AdminLogin />} />
+              </Routes>
+              <Footer />
+            </>
+          } />
+
           {/* Admin Routes */}
           <Route path="/admin/*" element={<AdminDashboard />}>
             <Route index element={<DashboardHome />} />
@@ -85,8 +84,8 @@ function App() {
             <Route path="tenders" element={<AdminTenderForm />} />
             <Route path="gallery" element={<AdminGalleryForm title="Gallery Management" />} />
             <Route path="login" element={<AdminLogin />} />
-            <Route path="settings" element={<Placeholder title="Settings" />} />
-            <Route path="reports" element={<Placeholder title="Gallery/Reports" />} />
+            <Route path="adminannounce" element={<AdminAnnounce />} />
+            <Route path="reports" element={<Placeholder title="Reports" />} />
           </Route>
         </Routes>
       </div>
