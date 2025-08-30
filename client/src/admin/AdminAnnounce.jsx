@@ -2,114 +2,273 @@ import React, { useState, useEffect } from "react";
 import Button from "./Button";
 import "./AdminAnnounce.css";
 
+// Automatically detect if running locally or in production
+const API_BASE_URL = window.location.hostname === 'localhost' 
+  ? 'http://localhost:5000' 
+  : 'https://society-website-cpd3.onrender.com';
+
 export default function AdminAnnounce() {
   const [announcements, setAnnouncements] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
-    date: "",
-    priority: "Medium",
-    title: "",
-    content: "",
+    announcement: "",
+    priority: "normal",
+    category: "general",
+    author: "Admin",
+    targetAudience: "all",
+    expiresAt: "",
+    tags: [],
   });
   const [isEditing, setIsEditing] = useState(false);
-  const [editIndex, setEditIndex] = useState(null);
+  const [editId, setEditId] = useState(null);
+  const [stats, setStats] = useState(null);
 
-  // Load announcements from localStorage on component mount
-  useEffect(() => {
-    const savedAnnouncements = localStorage.getItem("announcements");
-    if (savedAnnouncements) {
-      setAnnouncements(JSON.parse(savedAnnouncements));
+  // Fetch announcements from backend
+  const fetchAnnouncements = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`${API_BASE_URL}/announcements`);
+      const result = await response.json();
+      
+      if (result.success) {
+        setAnnouncements(result.data.announcements);
+      } else {
+        setError(result.message || 'Failed to fetch announcements');
+      }
+    } catch (err) {
+      setError('Network error: Unable to fetch announcements');
+      console.error('Fetch error:', err);
+    } finally {
+      setLoading(false);
     }
-  }, []);
+  };
 
-  // Save announcements to localStorage whenever announcements change
+  // Fetch statistics
+  const fetchStats = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/announcements/admin/stats`);
+      const result = await response.json();
+      
+      if (result.success) {
+        setStats(result.data);
+      }
+    } catch (err) {
+      console.error('Stats fetch error:', err);
+    }
+  };
+
+  // Load data on component mount
   useEffect(() => {
-    localStorage.setItem("announcements", JSON.stringify(announcements));
-  }, [announcements]);
+    fetchAnnouncements();
+    fetchStats();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleAdd = () => {
-    if (formData.content.trim() !== "" && formData.title.trim() !== "") {
-      const newAnnouncement = {
-        ...formData,
-        date: formData.date || new Date().toISOString().split('T')[0],
-        id: Date.now(), // Simple ID generation
-        createdAt: new Date().toLocaleString()
-      };
-      
-      setAnnouncements([...announcements, newAnnouncement]);
-      setFormData({ 
-        date: "", 
-        priority: "Medium", 
-        title: "", 
-        content: "" 
-      });
+    if (name === 'tags') {
+      // Handle comma-separated tags
+      const tagsArray = value.split(',').map(tag => tag.trim()).filter(tag => tag);
+      setFormData({ ...formData, [name]: tagsArray });
     } else {
-      alert("Please fill title and content!");
+      setFormData({ ...formData, [name]: value });
     }
   };
 
-  const handleEdit = (index) => {
-    setFormData(announcements[index]);
+  const handleAdd = async () => {
+    if (formData.announcement.trim() === "") {
+      alert("Please fill in the announcement content!");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const payload = {
+        ...formData,
+        expiresAt: formData.expiresAt || null,
+      };
+
+      const response = await fetch(`${API_BASE_URL}/announcements`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        await fetchAnnouncements(); // Refresh the list
+        await fetchStats(); // Refresh stats
+        setFormData({
+          announcement: "",
+          priority: "normal",
+          category: "general",
+          author: "Admin",
+          targetAudience: "all",
+          expiresAt: "",
+          tags: [],
+        });
+      } else {
+        setError(result.message || 'Failed to create announcement');
+      }
+    } catch (err) {
+      setError('Network error: Unable to create announcement');
+      console.error('Create error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEdit = (announcement) => {
+    setFormData({
+      announcement: announcement.announcement,
+      priority: announcement.priority,
+      category: announcement.category,
+      author: announcement.author,
+      targetAudience: announcement.targetAudience,
+      expiresAt: announcement.expiresAt ? announcement.expiresAt.split('T')[0] : "",
+      tags: announcement.tags || [],
+    });
     setIsEditing(true);
-    setEditIndex(index);
+    setEditId(announcement._id);
   };
 
-  const handleUpdate = () => {
-    if (formData.content.trim() !== "" && formData.title.trim() !== "") {
-      const updatedAnnouncements = [...announcements];
-      updatedAnnouncements[editIndex] = {
+  const handleUpdate = async () => {
+    if (formData.announcement.trim() === "") {
+      alert("Please fill in the announcement content!");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const payload = {
         ...formData,
-        id: announcements[editIndex].id,
-        createdAt: announcements[editIndex].createdAt,
-        updatedAt: new Date().toLocaleString()
+        expiresAt: formData.expiresAt || null,
       };
-      
-      setAnnouncements(updatedAnnouncements);
-      setFormData({ 
-        date: "", 
-        priority: "Medium", 
-        title: "", 
-        content: "" 
+
+      const response = await fetch(`${API_BASE_URL}/announcements/${editId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
       });
-      setIsEditing(false);
-      setEditIndex(null);
-    } else {
-      alert("Please fill title and content!");
+
+      const result = await response.json();
+
+      if (result.success) {
+        await fetchAnnouncements(); // Refresh the list
+        await fetchStats(); // Refresh stats
+        handleCancel(); // Reset form
+      } else {
+        setError(result.message || 'Failed to update announcement');
+      }
+    } catch (err) {
+      setError('Network error: Unable to update announcement');
+      console.error('Update error:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleDelete = (index) => {
-    if (window.confirm("Are you sure you want to delete this announcement?")) {
-      const updatedAnnouncements = announcements.filter((_, i) => i !== index);
-      setAnnouncements(updatedAnnouncements);
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this announcement?")) {
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/announcements/${id}`, {
+        method: 'DELETE',
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        await fetchAnnouncements(); // Refresh the list
+        await fetchStats(); // Refresh stats
+      } else {
+        setError(result.message || 'Failed to delete announcement');
+      }
+    } catch (err) {
+      setError('Network error: Unable to delete announcement');
+      console.error('Delete error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleToggleActive = async (id) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/announcements/${id}/toggle`, {
+        method: 'PATCH',
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        await fetchAnnouncements(); // Refresh the list
+        await fetchStats(); // Refresh stats
+      } else {
+        setError(result.message || 'Failed to toggle announcement status');
+      }
+    } catch (err) {
+      setError('Network error: Unable to toggle announcement');
+      console.error('Toggle error:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleCancel = () => {
-    setFormData({ 
-      date: "", 
-      priority: "Medium", 
-      title: "", 
-      content: "" 
+    setFormData({
+      announcement: "",
+      priority: "normal",
+      category: "general",
+      author: "Admin",
+      targetAudience: "all",
+      expiresAt: "",
+      tags: [],
     });
     setIsEditing(false);
-    setEditIndex(null);
+    setEditId(null);
   };
 
   const getPriorityClass = (priority) => {
     switch (priority.toLowerCase()) {
+      case 'urgent':
+        return 'priority-urgent';
       case 'high':
         return 'priority-high';
-      case 'medium':
-        return 'priority-medium';
+      case 'normal':
+        return 'priority-normal';
       case 'low':
         return 'priority-low';
       default:
-        return 'priority-medium';
+        return 'priority-normal';
+    }
+  };
+
+  const getCategoryIcon = (category) => {
+    switch (category) {
+      case 'maintenance': return '🔧';
+      case 'update': return '🚀';
+      case 'promotion': return '🎉';
+      case 'alert': return '⚠️';
+      case 'news': return '📰';
+      default: return '📢';
     }
   };
 
@@ -118,25 +277,50 @@ export default function AdminAnnounce() {
       <div className="admin-announce-header">
         <h1>Announcement Management</h1>
         <p>Create and manage announcements for your application</p>
+        
+        {/* Statistics Display */}
+        {stats && (
+          <div className="stats-container">
+            <div className="stat-item">
+              <span className="stat-number">{stats.total}</span>
+              <span className="stat-label">Total</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">{stats.active}</span>
+              <span className="stat-label">Active</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">{stats.recent}</span>
+              <span className="stat-label">Recent (24h)</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">{stats.urgentActive}</span>
+              <span className="stat-label">Urgent</span>
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Error Display */}
+      {error && (
+        <div className="error-message">
+          <p>Error: {error}</p>
+          <Button text="Retry" onClick={fetchAnnouncements} variant="secondary" />
+        </div>
+      )}
+
+      {/* Loading Indicator */}
+      {loading && (
+        <div className="loading-indicator">
+          <p>Loading...</p>
+        </div>
+      )}
 
       {/* Announcement Form */}
       <div className="announce-form-container">
         <h2>{isEditing ? "Edit Announcement" : "Create New Announcement"}</h2>
         
         <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="date">Date:</label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-              className="form-input"
-            />
-          </div>
-          
           <div className="form-group">
             <label htmlFor="priority">Priority:</label>
             <select
@@ -146,37 +330,105 @@ export default function AdminAnnounce() {
               onChange={handleChange}
               className="form-select"
             >
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
+              <option value="low">Low</option>
+              <option value="normal">Normal</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="category">Category:</label>
+            <select
+              id="category"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              className="form-select"
+            >
+              <option value="general">General</option>
+              <option value="maintenance">Maintenance</option>
+              <option value="update">Update</option>
+              <option value="promotion">Promotion</option>
+              <option value="alert">Alert</option>
+              <option value="news">News</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="author">Author:</label>
+            <input
+              type="text"
+              id="author"
+              name="author"
+              value={formData.author}
+              onChange={handleChange}
+              placeholder="Enter author name"
+              className="form-input"
+            />
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="targetAudience">Target Audience:</label>
+            <select
+              id="targetAudience"
+              name="targetAudience"
+              value={formData.targetAudience}
+              onChange={handleChange}
+              className="form-select"
+            >
+              <option value="all">All</option>
+              <option value="clients">Clients</option>
+              <option value="internal">Internal</option>
+              <option value="partners">Partners</option>
             </select>
           </div>
         </div>
 
         <div className="form-group">
-          <label htmlFor="title">Title:</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="Enter announcement title"
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="content">Content:</label>
+          <label htmlFor="announcement">Announcement Content:</label>
           <textarea
-            id="content"
-            name="content"
-            value={formData.content}
+            id="announcement"
+            name="announcement"
+            value={formData.announcement}
             onChange={handleChange}
-            placeholder="Enter announcement content"
+            placeholder="Enter announcement content (10-500 characters)"
             className="form-textarea"
             rows="4"
+            maxLength="500"
           />
+          <small className="char-count">
+            {formData.announcement.length}/500 characters
+          </small>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="expiresAt">Expires At (Optional):</label>
+            <input
+              type="datetime-local"
+              id="expiresAt"
+              name="expiresAt"
+              value={formData.expiresAt}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="tags">Tags (comma-separated):</label>
+            <input
+              type="text"
+              id="tags"
+              name="tags"
+              value={Array.isArray(formData.tags) ? formData.tags.join(', ') : ''}
+              onChange={handleChange}
+              placeholder="feature, update, important"
+              className="form-input"
+            />
+          </div>
         </div>
 
         <div className="form-actions">
@@ -186,11 +438,13 @@ export default function AdminAnnounce() {
                 text="Update Announcement"
                 onClick={handleUpdate} 
                 variant="primary"
+                disabled={loading}
               />
               <Button 
                 text="Cancel"
                 onClick={handleCancel} 
                 variant="secondary"
+                disabled={loading}
               />
             </>
           ) : (
@@ -198,6 +452,7 @@ export default function AdminAnnounce() {
               text="Add Announcement"
               onClick={handleAdd} 
               variant="primary"
+              disabled={loading}
             />
           )}
         </div>
@@ -205,7 +460,15 @@ export default function AdminAnnounce() {
 
       {/* Announcements List */}
       <div className="announcements-list">
-        <h2>Current Announcements ({announcements.length})</h2>
+        <div className="list-header">
+          <h2>Current Announcements ({announcements.length})</h2>
+          <Button 
+            text="Refresh"
+            onClick={fetchAnnouncements} 
+            variant="secondary"
+            disabled={loading}
+          />
+        </div>
         
         {announcements.length === 0 ? (
           <div className="no-announcements">
@@ -213,41 +476,81 @@ export default function AdminAnnounce() {
           </div>
         ) : (
           <div className="announcements-grid">
-            {announcements.map((announcement, index) => (
-              <div key={announcement.id || index} className="announcement-card">
+            {announcements.map((announcement) => (
+              <div key={announcement._id} className="announcement-card">
                 <div className="announcement-header">
-                  <span className={`priority-badge ${getPriorityClass(announcement.priority)}`}>
-                    {announcement.priority}
-                  </span>
-                  <span className="announcement-date">
-                    {announcement.date || new Date().toISOString().split('T')[0]}
-                  </span>
+                  <div className="header-left">
+                    <span className="category-icon">
+                      {getCategoryIcon(announcement.category)}
+                    </span>
+                    <span className={`priority-badge ${getPriorityClass(announcement.priority)}`}>
+                      {announcement.priority.toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="header-right">
+                    <span className={`status-badge ${announcement.isActive ? 'active' : 'inactive'}`}>
+                      {announcement.isActive ? 'Active' : 'Inactive'}
+                    </span>
+                  </div>
                 </div>
                 
-                <h3 className="announcement-title">{announcement.title}</h3>
-                <p className="announcement-content">{announcement.content}</p>
+                <div className="announcement-body">
+                  <div className="announcement-content">
+                    {announcement.announcement}
+                  </div>
+                  
+                  {announcement.tags && announcement.tags.length > 0 && (
+                    <div className="tags-container">
+                      {announcement.tags.map((tag, index) => (
+                        <span key={index} className="tag">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 
                 <div className="announcement-meta">
-                  <small>
-                    Created: {announcement.createdAt}
-                    {announcement.updatedAt && (
-                      <><br />Updated: {announcement.updatedAt}</>
-                    )}
-                  </small>
+                  <div className="meta-row">
+                    <span><strong>Author:</strong> {announcement.author}</span>
+                    <span><strong>Category:</strong> {announcement.category}</span>
+                  </div>
+                  <div className="meta-row">
+                    <span><strong>Audience:</strong> {announcement.targetAudience}</span>
+                    <span><strong>Created:</strong> {announcement.relativeTime}</span>
+                  </div>
+                  {announcement.expiresAt && (
+                    <div className="meta-row">
+                      <span className={`expires ${announcement.isExpired ? 'expired' : ''}`}>
+                        <strong>Expires:</strong> {new Date(announcement.expiresAt).toLocaleDateString()}
+                        {announcement.isExpired && ' (EXPIRED)'}
+                      </span>
+                    </div>
+                  )}
+                  <div className="meta-row">
+                    <span><strong>Views:</strong> {announcement.metadata?.impressions || 0}</span>
+                    <span><strong>Clicks:</strong> {announcement.metadata?.clickCount || 0}</span>
+                  </div>
                 </div>
                 
                 <div className="announcement-actions">
                   <Button 
                     text="Edit"
-                    onClick={() => handleEdit(index)} 
+                    onClick={() => handleEdit(announcement)} 
                     variant="success"
-                    disabled={isEditing}
+                    disabled={loading || isEditing}
+                  />
+                  <Button 
+                    text={announcement.isActive ? "Deactivate" : "Activate"}
+                    onClick={() => handleToggleActive(announcement._id, announcement.isActive)} 
+                    variant={announcement.isActive ? "warning" : "success"}
+                    disabled={loading}
                   />
                   <Button 
                     text="Delete"
-                    onClick={() => handleDelete(index)} 
+                    onClick={() => handleDelete(announcement._id)} 
                     variant="danger"
-                    disabled={isEditing}
+                    disabled={loading}
                   />
                 </div>
               </div>
