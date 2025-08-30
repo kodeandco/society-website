@@ -6,6 +6,7 @@ const loginRoute = require('./routes/login_route');
 const signupRoute = require('./routes/signup_route');
 const tenderRoute = require('./routes/tenders_route');
 const downloadRoute = require('./routes/download_route');
+const announcementRoute=require('./routes/announcement_routes'); // Import the announcement routes
 const galleryRoute=require('./routes/gallery_routes'); // Import the gallery routes
 const cors = require('cors'); // Import the cors middleware
 
@@ -34,6 +35,7 @@ app.use('/signup', signupRoute);
 app.use('/tenders/download', downloadRoute);
 app.use('/tenders', tenderRoute);
 app.use('/photogallery', galleryRoute);
+app.use('/announcements', announcementRoute); // Use the announcement routes
 
 app.get('/', (req, res) => {
     res.send('API running');
