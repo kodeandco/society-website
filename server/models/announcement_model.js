@@ -42,16 +42,8 @@ const announcementSchema = new mongoose.Schema({
     default: null
   },
   
-  author: {
-    type: String,
-    default: 'System'
-  },
-  
-  tags: [{
-    type: String,
-    lowercase: true,
-    trim: true
-  }],
+
+
   
   readBy: [{
     userId: {
@@ -70,16 +62,7 @@ const announcementSchema = new mongoose.Schema({
     default: 'all'
   },
   
-  metadata: {
-    clickCount: {
-      type: Number,
-      default: 0
-    },
-    impressions: {
-      type: Number,
-      default: 0
-    }
-  }
+  
 }, {
   timestamps: true, // Adds createdAt and updatedAt
   toJSON: { virtuals: true },
@@ -137,15 +120,9 @@ announcementSchema.methods.markAsRead = function(userId) {
   return this.save();
 };
 
-announcementSchema.methods.incrementClicks = function() {
-  this.metadata.clickCount += 1;
-  return this.save();
-};
 
-announcementSchema.methods.incrementImpressions = function() {
-  this.metadata.impressions += 1;
-  return this.save();
-};
+
+
 
 announcementSchema.methods.deactivate = function() {
   this.isActive = false;
@@ -275,7 +252,7 @@ const insertSampleAnnouncements = async () => {
 
     const existingCount = await Announcement.countDocuments();
     if (existingCount === 0) {
-      await Announcement.insertMany(sampleAnnouncements);
+      // await Announcement.insertMany(sampleAnnouncements);
       console.log('Sample announcements inserted successfully!');
     } else {
       console.log('Announcements already exist in database');
